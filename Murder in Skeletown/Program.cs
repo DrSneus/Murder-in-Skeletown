@@ -1,7 +1,7 @@
 using System;
 using System.Windows.Forms;
 
-namespace NPC_Detective
+namespace Skeletown_Game
 {
     static class Program
     {
@@ -14,7 +14,7 @@ namespace NPC_Detective
             Application.SetHighDpiMode(HighDpiMode.SystemAware);
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new NPC_Detective());
+            Application.Run(new Skeletown_Game());
         }
     }
 }

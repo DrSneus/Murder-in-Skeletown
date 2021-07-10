@@ -54,13 +54,13 @@ namespace Engine
         private static void PopulateLocations()
         {
             // Creating locations
-            Location home = new Location(LOCATION_ID_HOME, "Home",
-                "Your house. Just outside of Skeletown");
+            Location home = new Location(LOCATION_ID_HOME, "The Office",
+                "Your place of work, located just outside Skeletown");
 
             home.QuestAvailableHere = QuestByID(QUEST_ID_CLEAR_SOLVE_MURDER);
 
             Location citySquare = new Location(LOCATION_ID_CITY_SQUARE,
-                "City square", "Skeletons are walking around the city.");
+                "City Square", "Skeletons are walking around the city.");
 
             Location nightclub = new Location(LOCATION_ID_NIGHTCLUB,
                 "Bone Dry", "A nightclub popular with young skeletons");

@@ -9,14 +9,14 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace NPC_Detective
+namespace Skeletown_Game
 {
-    public partial class NPC_Detective : Form
+    public partial class Skeletown_Game : Form
     {
         private Player _player;
         private NPC _currentNPC;
 
-        public NPC_Detective()
+        public Skeletown_Game()
         {
             InitializeComponent();
 
@@ -31,24 +31,23 @@ namespace NPC_Detective
             MoveTo(_player.CurrentLocation.LocationToNorth);
         }
 
-        private void btnEast_Click(object sender, EventArgs e)
+        private void btnChoiceC_Click(object sender, EventArgs e)
         {
             MoveTo(_player.CurrentLocation.LocationToEast);
         }
 
-        private void btnSouth_Click(object sender, EventArgs e)
+        private void btnChoiceD_Click(object sender, EventArgs e)
         {
             MoveTo(_player.CurrentLocation.LocationToSouth);
         }
 
-        private void btnWest_Click(object sender, EventArgs e)
+        private void btnChoiceB_Click(object sender, EventArgs e)
         {
             MoveTo(_player.CurrentLocation.LocationToWest);
         }
 
         private void MoveTo(Location newLocation)
         {
-
             // Is the area available to enter?
             if (newLocation.IsLocked)
             {
@@ -57,15 +56,15 @@ namespace NPC_Detective
 
             // Update the player's current location
             _player.CurrentLocation = newLocation;
-
+            
             // Clear text
             rtbMessages.Text = "";
 
             // Show/hide available movement buttons
-            btnNorth.Visible = (newLocation.LocationToNorth != null);
-            btnEast.Visible = (newLocation.LocationToEast != null);
-            btnSouth.Visible = (newLocation.LocationToSouth != null);
-            btnWest.Visible = (newLocation.LocationToWest != null);
+            btnChoiceA.Visible = (newLocation.LocationToNorth != null);
+            btnChoiceC.Visible = (newLocation.LocationToEast != null);
+            btnChoiceD.Visible = (newLocation.LocationToSouth != null);
+            btnChoiceB.Visible = (newLocation.LocationToWest != null);
 
             // Display current location name and description
             rtbLocation.Text = newLocation.Name + Environment.NewLine;
@@ -110,8 +109,6 @@ namespace NPC_Detective
                                 // Add the reward item to the player's inventory
                                 _player.AddItemToInventory(newLocation.QuestAvailableHere.RewardItem);
                             }
-                            
-                            
 
                             // Mark the quest as completed
                             _player.MarkQuestCompleted(newLocation.QuestAvailableHere);
@@ -159,6 +156,7 @@ namespace NPC_Detective
             // Refresh player's quest list
             UpdateQuestListInUI();
         }
+
 
         private void UpdateInventoryListInUI()
         {
