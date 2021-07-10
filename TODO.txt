@@ -1,0 +1,11 @@
+TO DO:
+
+- Option Menu
+	- Travel option (dropdown menu to select location?)
+	- Dialogue for each scene
+- NPCs
+	- Art (pixel?)
+- UI
+	- Nicer quest log (tooltip descriptions)
+	- Better background color
+	- Bigger screen
