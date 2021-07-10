@@ -10,7 +10,7 @@ namespace Engine
         public string Name { get; set; }
         public string NamePlural { get; set; }
 
-        public Item(int id, string name, string namePlural)
+        public Item(int id, string name, string namePlural = null)
         {
             ID = id;
             Name = name;

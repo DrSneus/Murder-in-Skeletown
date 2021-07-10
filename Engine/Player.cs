@@ -4,47 +4,18 @@ using System.Text;
 
 namespace Engine
 {
-    public class Player : LivingCreature
+    public class Player
     {
-        public int Gold { get; set; }
-        public int ExperiencePoints { get; set; }
-        public int Level { get; set; }
+        public string Name { get; set; }
         public List<InventoryItem> Inventory { get; set; }
         public List<PlayerQuest> Quests { get; set; }
         public Location CurrentLocation { get; set; }
 
-        public Player(int currentHitPoints, int maximumHitPoints,
-             int gold, int experiencePoints, int level) :
-             base(currentHitPoints, maximumHitPoints)
+        public Player(string name)
         {
-            Gold = gold;
-            ExperiencePoints = experiencePoints;
-            Level = level;
+            Name = name;
             Inventory = new List<InventoryItem>();
             Quests = new List<PlayerQuest>();
-        }
-
-        public bool HasRequiredItemToEnterThisLocation(Location location)
-        {
-            if (location.ItemRequiredToEnter == null)
-            {
-                // There is no required item for this location,
-                // so return "true"
-                return true;
-            }
-            // See if the player has the required item in
-            // their inventory
-            foreach (InventoryItem ii in Inventory)
-            {
-                if (ii.Details.ID == location.ItemRequiredToEnter.ID)
-                {
-                    // We found the required item, so return "true"
-                    return true;
-                }
-            }
-            // We didn't find the required item in their inventory,
-            // so return "false"
-            return false;
         }
 
         public bool HasThisQuest(Quest quest)
@@ -78,31 +49,34 @@ namespace Engine
             foreach (QuestCompletionItem qci in quest.QuestCompletionItems)
             {
                 bool foundItemInPlayersInventory = false;
-                // Check each item in the player's inventory,
-                // to see if they have it, and enough of it
+                // Search for items in the player's inventory
                 foreach (InventoryItem ii in Inventory)
                 {
                     // The player has the item in their inventory
                     if (ii.Details.ID == qci.Details.ID)
                     {
                         foundItemInPlayersInventory = true;
-                        // The player does not have enough of this item
-                        // to complete the quest
-                        if (ii.Quantity < qci.Quantity)
+                        // The player has enough
+                        if (ii.Quantity >= qci.Quantity)
+                        {
+                            break;
+                        }
+
+                        // The player does not have enough
+                        else
                         {
                             return false;
                         }
                     }
                 }
-                // The player does not have any of this quest
-                // completion item in their inventory
+
+                // Player is missing a necessary itmm
                 if (!foundItemInPlayersInventory)
                 {
                     return false;
                 }
             }
-            // If we got here, then the player must have all the required
-            //items, and enough of them, to complete the quest.
+            // Player has all required items
             return true;
         }
 

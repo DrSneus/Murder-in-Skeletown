@@ -20,15 +20,10 @@ namespace NPC_Detective
         {
             InitializeComponent();
 
-            _player = new Player(10, 10, 20, 0, 1);
+            _player = new Player("Sam");
             MoveTo(World.LocationByID(World.LOCATION_ID_HOME));
             _player.Inventory.Add(new InventoryItem(
-                World.ItemByID(World.ITEM_ID_RUSTY_SWORD), 1));
-
-            lblHitPoints.Text = _player.CurrentHitPoints.ToString();
-            lblGold.Text = _player.Gold.ToString();
-            lblExperience.Text = _player.ExperiencePoints.ToString();
-            lblLevel.Text = _player.Level.ToString();
+                World.ItemByID(World.ITEM_ID_GUN), 1));
         }
 
         private void btnNorth_Click(object sender, EventArgs e)
@@ -53,17 +48,18 @@ namespace NPC_Detective
 
         private void MoveTo(Location newLocation)
         {
-            // Does the location have any required items
-            if (!_player.HasRequiredItemToEnterThisLocation(newLocation))
+
+            // Is the area available to enter?
+            if (newLocation.IsLocked)
             {
-                rtbMessages.Text += "You must have a " +
-                    newLocation.ItemRequiredToEnter.Name +
-                        " to enter this location." + Environment.NewLine;
                 return;
             }
 
             // Update the player's current location
             _player.CurrentLocation = newLocation;
+
+            // Clear text
+            rtbMessages.Text = "";
 
             // Show/hide available movement buttons
             btnNorth.Visible = (newLocation.LocationToNorth != null);
@@ -75,22 +71,16 @@ namespace NPC_Detective
             rtbLocation.Text = newLocation.Name + Environment.NewLine;
             rtbLocation.Text += newLocation.Description + Environment.NewLine;
 
-            // Completely heal the player
-            _player.CurrentHitPoints = _player.MaximumHitPoints;
-
-            // Update Hit Points in UI
-            lblHitPoints.Text = _player.CurrentHitPoints.ToString();
-
             // Does the location have a quest?
             if (newLocation.QuestAvailableHere != null)
             {
                 // See if the player already has the quest, and if they've completed it
                 bool playerAlreadyHasQuest = _player.HasThisQuest(newLocation.QuestAvailableHere);
-                bool playerAlreadyCompletedQuest = _player.CompletedThisQuest(newLocation.QuestAvailableHere);
-
-                // See if the player already has the quest
                 if (playerAlreadyHasQuest)
                 {
+                    // See if the player has completed the quest
+                    bool playerAlreadyCompletedQuest = _player.CompletedThisQuest(newLocation.QuestAvailableHere);
+
                     // If the player has not completed the quest yet
                     if (!playerAlreadyCompletedQuest)
                     {
@@ -101,66 +91,43 @@ namespace NPC_Detective
                         if (playerHasAllItemsToCompleteQuest)
                         {
                             // Display message
-                            rtbMessages.Text += Environment.NewLine;
-                            rtbMessages.Text += "You complete the " +
+                            rtbMessages.Text = "You've completed the \"" +
                                 newLocation.QuestAvailableHere.Name +
-                                    " quest." + Environment.NewLine;
+                                    "\" quest." + Environment.NewLine;
 
                             // Remove quest items from inventory
                             _player.RemoveQuestCompletionItems(newLocation.QuestAvailableHere);
 
                             // Give quest rewards
-                            rtbMessages.Text += "You receive: " + Environment.NewLine;
-                            rtbMessages.Text +=
-                                newLocation.QuestAvailableHere.RewardExperiencePoints.ToString() +
-                                    " experience points" + Environment.NewLine;
-                            rtbMessages.Text +=
-                                newLocation.QuestAvailableHere.RewardGold.ToString() +
-                                    " gold" + Environment.NewLine;
-                            rtbMessages.Text +=
-                                newLocation.QuestAvailableHere.RewardItem.Name +
-                                    Environment.NewLine;
-                            rtbMessages.Text += Environment.NewLine;
+                            if (newLocation.QuestAvailableHere.RewardItem != null)
+                            {
+                                rtbMessages.Text += "You receive: " + Environment.NewLine;
+                                rtbMessages.Text +=
+                                    newLocation.QuestAvailableHere.RewardItem.Name +
+                                        Environment.NewLine;
+                                rtbMessages.Text += Environment.NewLine;
 
-                            _player.ExperiencePoints +=
-                                newLocation.QuestAvailableHere.RewardExperiencePoints;
-                            _player.Gold += newLocation.QuestAvailableHere.RewardGold;
-
-                            // Add the reward item to the player's inventory
-                            _player.AddItemToInventory(newLocation.QuestAvailableHere.RewardItem);
+                                // Add the reward item to the player's inventory
+                                _player.AddItemToInventory(newLocation.QuestAvailableHere.RewardItem);
+                            }
+                            
+                            
 
                             // Mark the quest as completed
                             _player.MarkQuestCompleted(newLocation.QuestAvailableHere);
                         }
                     }
                 }
+
+                // The player does not already have the quest
                 else
                 {
-                    // The player does not already have the quest
-
                     // Display the messages
-                    rtbMessages.Text += "You receive the " +
-                        newLocation.QuestAvailableHere.Name +
-                            " quest." + Environment.NewLine;
+                    rtbMessages.Text += "You received the quest: \"" +
+                        newLocation.QuestAvailableHere.Name + "\""+ Environment.NewLine;
+
                     rtbMessages.Text += newLocation.QuestAvailableHere.Description +
                         Environment.NewLine;
-                    rtbMessages.Text += "To complete it, return with:" +
-                        Environment.NewLine;
-                    foreach (QuestCompletionItem qci in
-                        newLocation.QuestAvailableHere.QuestCompletionItems)
-                    {
-                        if (qci.Quantity == 1)
-                        {
-                            rtbMessages.Text += qci.Quantity.ToString() + " " +
-                                qci.Details.Name + Environment.NewLine;
-                        }
-                        else
-                        {
-                            rtbMessages.Text += qci.Quantity.ToString() + " " +
-                                qci.Details.NamePlural + Environment.NewLine;
-                        }
-                    }
-                    rtbMessages.Text += Environment.NewLine;
 
                     // Add the quest to the player's quest list
                     _player.Quests.Add(new PlayerQuest(newLocation.QuestAvailableHere));
@@ -168,50 +135,29 @@ namespace NPC_Detective
             }
 
             // Does the location have a NPC?
-            if (newLocation.NPCLivingHere != null)
+            if (newLocation.NPCHere != null)
             {
-                rtbMessages.Text += "You see a " + newLocation.NPCLivingHere.Name +
+                rtbMessages.Text += "You see a " + newLocation.NPCHere.Name +
                     Environment.NewLine;
 
                 // Make a new NPC, using the values from the standard NPC
                 // in the World.NPC list
                 NPC standardNPC = World.NPCByID(
-                    newLocation.NPCLivingHere.ID);
+                    newLocation.NPCHere.ID);
 
-                _currentNPC = new NPC(standardNPC.ID, standardNPC.Name,
-                    standardNPC.MaximumDamage, standardNPC.RewardExperiencePoints,
-                        standardNPC.RewardGold, standardNPC.CurrentHitPoints,
-                            standardNPC.MaximumHitPoints);
-
-                foreach (LootItem lootItem in standardNPC.LootTable)
-                {
-                    _currentNPC.LootTable.Add(lootItem);
-                }
-
-                cboWeapons.Visible = true;
-                cboPotions.Visible = true;
-                btnUseWeapon.Visible = true;
-                btnUsePotion.Visible = true;
+                _currentNPC = new NPC(standardNPC.ID, standardNPC.Name);
             }
 
+            // No NPC
             else
             {
                 _currentNPC = null;
-
-                cboWeapons.Visible = false;
-                cboPotions.Visible = false;
-                btnUseWeapon.Visible = false;
-                btnUsePotion.Visible = false;
             }
 
             // Refresh player's inventory list
             UpdateInventoryListInUI();
             // Refresh player's quest list
             UpdateQuestListInUI();
-            // Refresh player's weapons combobox
-            UpdateWeaponListInUI();
-            // Refresh player's potions combobox
-            UpdatePotionListInUI();
         }
 
         private void UpdateInventoryListInUI()
@@ -247,247 +193,6 @@ namespace NPC_Detective
                     playerQuest.Details.Name,
                     playerQuest.IsCompleted.ToString() });
             }
-        }
-
-        private void UpdateWeaponListInUI()
-        {
-            List<Weapon> weapons = new List<Weapon>();
-            foreach (InventoryItem inventoryItem in _player.Inventory)
-            {
-                if (inventoryItem.Details is Weapon)
-                {
-                    if (inventoryItem.Quantity > 0)
-                    {
-                        weapons.Add((Weapon)inventoryItem.Details);
-                    }
-                }
-            }
-            if (weapons.Count == 0)
-            {
-                // The player doesn't have any weapons, so hide the weapon
-                // combobox and "Use" button
-                cboWeapons.Visible = false;
-                btnUseWeapon.Visible = false;
-            }
-            else
-            {
-                cboWeapons.DataSource = weapons;
-                cboWeapons.DisplayMember = "Name";
-                cboWeapons.ValueMember = "ID";
-                cboWeapons.SelectedIndex = 0;
-            }
-        }
-
-        private void UpdatePotionListInUI()
-        {
-            List<HealingPotion> healingPotions = new List<HealingPotion>();
-            foreach (InventoryItem inventoryItem in _player.Inventory)
-            {
-                if (inventoryItem.Details is HealingPotion)
-                {
-                    if (inventoryItem.Quantity > 0)
-                    {
-                        healingPotions.Add(
-                        (HealingPotion)inventoryItem.Details);
-                    }
-                }
-            }
-            if (healingPotions.Count == 0)
-            {
-                // The player doesn't have any potions, so hide the potion
-                // combobox and "Use" button
-                cboPotions.Visible = false;
-                btnUsePotion.Visible = false;
-            }
-            else
-            {
-                cboPotions.DataSource = healingPotions;
-                cboPotions.DisplayMember = "Name";
-                cboPotions.ValueMember = "ID";
-                cboPotions.SelectedIndex = 0;
-            }
-        }
-
-        private void btnUseWeapon_Click(object sender, EventArgs e)
-        {
-            // Get the currently selected weapon from the cboWeapons ComboBox
-            Weapon currentWeapon = (Weapon)cboWeapons.SelectedItem;
-
-            // Determine the amount of damage to do to the NPC
-            int damageToNPC = RandomNumberGenerator.NumberBetween(
-                currentWeapon.MinimumDamage, currentWeapon.MaximumDamage);
-
-            // Apply the damage to the NPC's CurrentHitPoints
-            _currentNPC.CurrentHitPoints -= damageToNPC;
-
-            // Display message
-            rtbMessages.Text += "You hit the " + _currentNPC.Name + " for " +
-                damageToNPC.ToString() + " points." + Environment.NewLine;
-
-            // Check if the NPC is dead
-            if (_currentNPC.CurrentHitPoints <= 0)
-            {
-                // NPC is dead
-                rtbMessages.Text += Environment.NewLine;
-                rtbMessages.Text += "You defeated the " + _currentNPC.Name +
-                    Environment.NewLine;
-
-                // Give player experience points for killing the NPC
-                _player.ExperiencePoints += _currentNPC.RewardExperiencePoints;
-                rtbMessages.Text += "You receive " +
-                    _currentNPC.RewardExperiencePoints.ToString() +
-                        " experience points" + Environment.NewLine;
-
-                // Give player gold for killing the NPC
-                _player.Gold += _currentNPC.RewardGold;
-                rtbMessages.Text += "You receive " +
-                    _currentNPC.RewardGold.ToString() + " gold" + Environment.NewLine;
-
-                // Get random loot items from the NPC
-                List<InventoryItem> lootedItems = new List<InventoryItem>();
-
-                // Add items to the lootedItems list, comparing a random number to the drop
-                //percentage
-                foreach (LootItem lootItem in _currentNPC.LootTable)
-                {
-                    if (RandomNumberGenerator.NumberBetween(1, 100) <= lootItem.DropPercentage)
-                    {
-                        lootedItems.Add(new InventoryItem(lootItem.Details, 1));
-                    }
-                }
-
-                // If no items were randomly selected, then add the default loot item(s).
-                if (lootedItems.Count == 0)
-                {
-                    foreach (LootItem lootItem in _currentNPC.LootTable)
-                    {
-                        if (lootItem.IsDefaultItem)
-                        {
-                            lootedItems.Add(new InventoryItem(lootItem.Details, 1));
-                        }
-                    }
-                }
-
-                // Add the looted items to the player's inventory
-                foreach (InventoryItem inventoryItem in lootedItems)
-                {
-                    _player.AddItemToInventory(inventoryItem.Details);
-
-                    if (inventoryItem.Quantity == 1)
-                    {
-                        rtbMessages.Text += "You loot " +
-                           inventoryItem.Quantity.ToString() + " " +
-                           inventoryItem.Details.Name + Environment.NewLine;
-                    }
-                    else
-                    {
-                        rtbMessages.Text += "You loot " +
-                            inventoryItem.Quantity.ToString() + " " +
-                            inventoryItem.Details.NamePlural + Environment.NewLine;
-                    }
-                }
-
-                // Refresh player information and inventory controls
-                lblHitPoints.Text = _player.CurrentHitPoints.ToString();
-                lblGold.Text = _player.Gold.ToString();
-                lblExperience.Text = _player.ExperiencePoints.ToString();
-                lblLevel.Text = _player.Level.ToString();
-
-                UpdateInventoryListInUI();
-                UpdateWeaponListInUI();
-                UpdatePotionListInUI();
-
-                // Add a blank line to the messages box, just for appearance.
-                rtbMessages.Text += Environment.NewLine;
-
-                // Move player to current location (to heal player and create a new NPC
-                // to fight)
-                MoveTo(_player.CurrentLocation);
-            }
-
-            // NPC is still alive
-            else
-            {
-                // Determine the amount of damage the NPC does to the player
-                int damageToPlayer =
-                    RandomNumberGenerator.NumberBetween(0, _currentNPC.MaximumDamage);
-
-                // Display message
-                rtbMessages.Text += "The " + _currentNPC.Name + " did " +
-                    damageToPlayer.ToString() + " points of damage." + Environment.NewLine;
-
-                // Subtract damage from player
-                _player.CurrentHitPoints -= damageToPlayer;
-
-                // Refresh player data in UI
-                lblHitPoints.Text = _player.CurrentHitPoints.ToString();
-
-                if (_player.CurrentHitPoints <= 0)
-                {
-                    // Display message
-                    rtbMessages.Text += "The " + _currentNPC.Name + " killed you." +
-                        Environment.NewLine;
-
-                    // Move player to "Home"
-                    MoveTo(World.LocationByID(World.LOCATION_ID_HOME));
-                }
-            }
-        }
-
-        private void btnUsePotion_Click(object sender, EventArgs e)
-        {
-            // Get the currently selected potion from the combobox
-            HealingPotion potion = (HealingPotion)cboPotions.SelectedItem;
-
-            // Add healing amount to the player's current hit points
-            _player.CurrentHitPoints = (_player.CurrentHitPoints + potion.AmountToHeal);
-
-            // CurrentHitPoints cannot exceed player's MaximumHitPoints
-            if (_player.CurrentHitPoints > _player.MaximumHitPoints)
-            {
-                _player.CurrentHitPoints = _player.MaximumHitPoints;
-            }
-
-            // Remove the potion from the player's inventory
-            foreach (InventoryItem ii in _player.Inventory)
-            {
-                if (ii.Details.ID == potion.ID)
-                {
-                    ii.Quantity--;
-                    break;
-                }
-            }
-
-            // Display message
-            rtbMessages.Text += "You drink a " + potion.Name + Environment.NewLine;
-
-            // NPC gets their turn to attack
-
-            // Determine the amount of damage the NPC does to the player
-            int damageToPlayer =
-            RandomNumberGenerator.NumberBetween(0, _currentNPC.MaximumDamage);
-
-            // Display message
-            rtbMessages.Text += "The " + _currentNPC.Name + " did " +
-                damageToPlayer.ToString() + " points of damage." + Environment.NewLine;
-
-            // Subtract damage from player
-            _player.CurrentHitPoints -= damageToPlayer;
-
-            if (_player.CurrentHitPoints <= 0)
-            {
-                // Display message
-                rtbMessages.Text += "The " + _currentNPC.Name + " killed you." +
-                Environment.NewLine;
-
-                // Move player to "Home"
-                MoveTo(World.LocationByID(World.LOCATION_ID_HOME));
-            }
-
-            // Refresh player data in UI
-            lblHitPoints.Text = _player.CurrentHitPoints.ToString();
-            UpdateInventoryListInUI();
-            UpdatePotionListInUI();
         }
     }
 }
