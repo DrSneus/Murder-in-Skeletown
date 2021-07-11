@@ -1,11 +1,22 @@
 TO DO:
-
 - Option Menu
-	- Travel option (dropdown menu to select location?)
-	- Dialogue for each scene
+	- Item "use" system
 - NPCs
 	- Art (pixel?)
+- Quests
+	- Better quest addition in log
+	- Quest hints from dialogue
 - UI
 	- Nicer quest log (tooltip descriptions)
+	- Nicer inventory screen
 	- Better background color
-	- Bigger screen
+	- Better screen layout
+- Plot
+	- More NPCs and areas
+	- Story
+
+DONE:
+- Option Menu
+	- Travel option (dropdown menu to select location?)
+	- Full dialogue engine
+	- Look around option
