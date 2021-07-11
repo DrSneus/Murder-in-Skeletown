@@ -12,10 +12,7 @@ namespace Engine
         public bool IsLocked { get; set; }
         public Quest QuestAvailableHere { get; set; }
         public NPC NPCHere { get; set; }
-        public Location LocationToNorth { get; set; }
-        public Location LocationToEast { get; set; }
-        public Location LocationToSouth { get; set; }
-        public Location LocationToWest { get; set; }
+        public List<Location> AdjacentLocations { get; set; }
 
         public Location(int id, string name, string description,
             bool isLocked = false,
@@ -28,6 +25,7 @@ namespace Engine
             IsLocked = isLocked;
             QuestAvailableHere = questAvailableHere;
             NPCHere = npcHere;
+            AdjacentLocations = new List<Location>();
         }
     }
 }

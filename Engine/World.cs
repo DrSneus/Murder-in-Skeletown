@@ -66,12 +66,12 @@ namespace Engine
                 "Bone Dry", "A nightclub popular with young skeletons");
 
             // Linking locations
-            home.LocationToNorth = citySquare;
+            home.AdjacentLocations.Add(citySquare);
 
-            citySquare.LocationToWest = nightclub;
-            citySquare.LocationToSouth = home;
+            citySquare.AdjacentLocations.Add(nightclub);
+            citySquare.AdjacentLocations.Add(home);
 
-            nightclub.LocationToEast = citySquare;
+            nightclub.AdjacentLocations.Add(citySquare);
 
             // Add the locations to the static list
             Locations.Add(home);

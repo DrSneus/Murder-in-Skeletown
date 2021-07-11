@@ -11,6 +11,8 @@ namespace Engine
         public List<PlayerQuest> Quests { get; set; }
         public Location CurrentLocation { get; set; }
 
+        public List<Location> VisitedLocations = new List<Location>();
+
         public Player(string name)
         {
             Name = name;
@@ -128,5 +130,19 @@ namespace Engine
                 }
             }
         }
+
+        public bool IsNewLocation(Location location)
+        {
+            // Checks if the location has been visited yet
+            if (VisitedLocations.Contains(location) != true)
+            {
+                VisitedLocations.Add(location);
+                return true;
+            }
+
+            return false;
+        }
+
+
     }
 }

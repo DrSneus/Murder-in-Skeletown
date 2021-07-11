@@ -15,35 +15,46 @@ namespace Skeletown_Game
     {
         private Player _player;
         private NPC _currentNPC;
+        private const int MOVE_ID = 1;
+        private const int LOOK_ID = 2;
+        private const int GIVE_ID = 3;
+        private const int TALK_ID = 4;
+        private int menu_ID = 0;
 
         public Skeletown_Game()
         {
             InitializeComponent();
-
-            _player = new Player("Sam");
+             _player = new Player("Sam");
             MoveTo(World.LocationByID(World.LOCATION_ID_HOME));
             _player.Inventory.Add(new InventoryItem(
                 World.ItemByID(World.ITEM_ID_GUN), 1));
         }
 
-        private void btnNorth_Click(object sender, EventArgs e)
+        private void listMenu_SelectedIndexChanged(object sender, EventArgs e)
         {
-            MoveTo(_player.CurrentLocation.LocationToNorth);
+            if (menu_ID == MOVE_ID)
+            {
+                MoveTo((Location)listMenu.SelectedItem);
+                menu_ID = 0;
+            }
         }
 
-        private void btnChoiceC_Click(object sender, EventArgs e)
+        private void btnMove_Click(object sender, EventArgs e)
         {
-            MoveTo(_player.CurrentLocation.LocationToEast);
+            List<Location> moveOptions = _player.VisitedLocations.Union(_player.CurrentLocation.AdjacentLocations).ToList();
+
+            listMenu.DataSource = moveOptions;
+            listMenu.DisplayMember = "Name";
+
+            menu_ID = MOVE_ID;
+            listMenu.Visible = true;
         }
 
-        private void btnChoiceD_Click(object sender, EventArgs e)
+        private void btnLook_Click(object sender, EventArgs e)
         {
-            MoveTo(_player.CurrentLocation.LocationToSouth);
-        }
-
-        private void btnChoiceB_Click(object sender, EventArgs e)
-        {
-            MoveTo(_player.CurrentLocation.LocationToWest);
+            menu_ID = LOOK_ID;
+            rtbMessages.Text = _player.CurrentLocation.Description;
+            listMenu.Visible = false;
         }
 
         private void MoveTo(Location newLocation)
@@ -53,18 +64,15 @@ namespace Skeletown_Game
             {
                 return;
             }
+            // Mark location as having been entered
+            _player.IsNewLocation(newLocation);
 
             // Update the player's current location
             _player.CurrentLocation = newLocation;
             
             // Clear text
             rtbMessages.Text = "";
-
-            // Show/hide available movement buttons
-            btnChoiceA.Visible = (newLocation.LocationToNorth != null);
-            btnChoiceC.Visible = (newLocation.LocationToEast != null);
-            btnChoiceD.Visible = (newLocation.LocationToSouth != null);
-            btnChoiceB.Visible = (newLocation.LocationToWest != null);
+            listMenu.Visible = false;
 
             // Display current location name and description
             rtbLocation.Text = newLocation.Name + Environment.NewLine;
@@ -132,6 +140,7 @@ namespace Skeletown_Game
             }
 
             // Does the location have a NPC?
+            _currentNPC = null;
             if (newLocation.NPCHere != null)
             {
                 rtbMessages.Text += "You see a " + newLocation.NPCHere.Name +
@@ -145,18 +154,11 @@ namespace Skeletown_Game
                 _currentNPC = new NPC(standardNPC.ID, standardNPC.Name);
             }
 
-            // No NPC
-            else
-            {
-                _currentNPC = null;
-            }
-
             // Refresh player's inventory list
             UpdateInventoryListInUI();
             // Refresh player's quest list
             UpdateQuestListInUI();
         }
-
 
         private void UpdateInventoryListInUI()
         {
@@ -176,7 +178,6 @@ namespace Skeletown_Game
                 }
             }
         }
-
         private void UpdateQuestListInUI()
         {
             dgvQuests.RowHeadersVisible = false;
@@ -192,5 +193,7 @@ namespace Skeletown_Game
                     playerQuest.IsCompleted.ToString() });
             }
         }
+
+
     }
 }
