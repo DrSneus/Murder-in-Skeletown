@@ -44,6 +44,9 @@ namespace Skeletown_Game
             // 
             // rtbMessages
             // 
+            this.rtbMessages.BackColor = System.Drawing.Color.LightGray;
+            this.rtbMessages.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.rtbMessages.ForeColor = System.Drawing.SystemColors.MenuText;
             this.rtbMessages.Location = new System.Drawing.Point(352, 346);
             this.rtbMessages.Name = "rtbMessages";
             this.rtbMessages.ReadOnly = true;
@@ -59,14 +62,14 @@ namespace Skeletown_Game
             this.dgvInventory.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvInventory.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
             this.dgvInventory.Enabled = false;
-            this.dgvInventory.Location = new System.Drawing.Point(16, 130);
+            this.dgvInventory.Location = new System.Drawing.Point(16, 82);
             this.dgvInventory.MultiSelect = false;
             this.dgvInventory.Name = "dgvInventory";
             this.dgvInventory.ReadOnly = true;
             this.dgvInventory.RowHeadersVisible = false;
             this.dgvInventory.RowHeadersWidth = 62;
             this.dgvInventory.RowTemplate.Height = 33;
-            this.dgvInventory.Size = new System.Drawing.Size(312, 309);
+            this.dgvInventory.Size = new System.Drawing.Size(312, 357);
             this.dgvInventory.TabIndex = 19;
             // 
             // dgvQuests
@@ -89,40 +92,48 @@ namespace Skeletown_Game
             // 
             // btnTalk
             // 
+            this.btnTalk.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.btnTalk.Font = new System.Drawing.Font("NSimSun", 16F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this.btnTalk.Location = new System.Drawing.Point(352, 446);
             this.btnTalk.Name = "btnTalk";
             this.btnTalk.Size = new System.Drawing.Size(166, 85);
             this.btnTalk.TabIndex = 21;
             this.btnTalk.Text = "Talk";
-            this.btnTalk.UseVisualStyleBackColor = true;
+            this.btnTalk.UseVisualStyleBackColor = false;
             // 
             // btnShow
             // 
+            this.btnShow.BackColor = System.Drawing.Color.Gainsboro;
+            this.btnShow.Font = new System.Drawing.Font("NSimSun", 16F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this.btnShow.Location = new System.Drawing.Point(352, 547);
             this.btnShow.Name = "btnShow";
             this.btnShow.Size = new System.Drawing.Size(166, 85);
             this.btnShow.TabIndex = 22;
             this.btnShow.Text = "Show";
-            this.btnShow.UseVisualStyleBackColor = true;
+            this.btnShow.UseVisualStyleBackColor = false;
             // 
             // btnMove
             // 
+            this.btnMove.BackColor = System.Drawing.Color.Gainsboro;
+            this.btnMove.Font = new System.Drawing.Font("NSimSun", 16F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this.btnMove.Location = new System.Drawing.Point(783, 547);
             this.btnMove.Name = "btnMove";
             this.btnMove.Size = new System.Drawing.Size(166, 85);
             this.btnMove.TabIndex = 23;
             this.btnMove.Text = "Move";
-            this.btnMove.UseVisualStyleBackColor = true;
+            this.btnMove.UseVisualStyleBackColor = false;
             this.btnMove.Click += new System.EventHandler(this.btnMove_Click);
             // 
             // btnLook
             // 
+            this.btnLook.BackColor = System.Drawing.Color.Gainsboro;
+            this.btnLook.Font = new System.Drawing.Font("NSimSun", 16F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this.btnLook.Location = new System.Drawing.Point(783, 445);
             this.btnLook.Name = "btnLook";
             this.btnLook.Size = new System.Drawing.Size(166, 85);
             this.btnLook.TabIndex = 24;
             this.btnLook.Text = "Look";
-            this.btnLook.UseVisualStyleBackColor = true;
+            this.btnLook.UseVisualStyleBackColor = false;
             this.btnLook.Click += new System.EventHandler(this.btnLook_Click);
             // 
             // listMenu
@@ -138,10 +149,10 @@ namespace Skeletown_Game
             // lblLocation
             // 
             this.lblLocation.AutoSize = true;
-            this.lblLocation.Font = new System.Drawing.Font("Segoe UI", 20F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.lblLocation.Location = new System.Drawing.Point(16, 9);
+            this.lblLocation.Font = new System.Drawing.Font("Courier New", 20F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.lblLocation.Location = new System.Drawing.Point(16, 18);
             this.lblLocation.Name = "lblLocation";
-            this.lblLocation.Size = new System.Drawing.Size(262, 54);
+            this.lblLocation.Size = new System.Drawing.Size(308, 46);
             this.lblLocation.TabIndex = 26;
             this.lblLocation.Text = "LocationText";
             this.lblLocation.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
