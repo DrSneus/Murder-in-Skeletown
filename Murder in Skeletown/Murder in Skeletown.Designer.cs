@@ -33,7 +33,7 @@ namespace Skeletown_Game
             this.dgvInventory = new System.Windows.Forms.DataGridView();
             this.dgvQuests = new System.Windows.Forms.DataGridView();
             this.btnTalk = new System.Windows.Forms.Button();
-            this.btnShow = new System.Windows.Forms.Button();
+            this.btnUse = new System.Windows.Forms.Button();
             this.btnMove = new System.Windows.Forms.Button();
             this.btnLook = new System.Windows.Forms.Button();
             this.listMenu = new System.Windows.Forms.ListBox();
@@ -100,17 +100,18 @@ namespace Skeletown_Game
             this.btnTalk.TabIndex = 21;
             this.btnTalk.Text = "Talk";
             this.btnTalk.UseVisualStyleBackColor = false;
+            this.btnTalk.Click += new System.EventHandler(this.btnTalk_Click);
             // 
-            // btnShow
+            // btnUse
             // 
-            this.btnShow.BackColor = System.Drawing.Color.Gainsboro;
-            this.btnShow.Font = new System.Drawing.Font("NSimSun", 16F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.btnShow.Location = new System.Drawing.Point(352, 547);
-            this.btnShow.Name = "btnShow";
-            this.btnShow.Size = new System.Drawing.Size(166, 85);
-            this.btnShow.TabIndex = 22;
-            this.btnShow.Text = "Show";
-            this.btnShow.UseVisualStyleBackColor = false;
+            this.btnUse.BackColor = System.Drawing.Color.Gainsboro;
+            this.btnUse.Font = new System.Drawing.Font("NSimSun", 16F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.btnUse.Location = new System.Drawing.Point(352, 547);
+            this.btnUse.Name = "btnUse";
+            this.btnUse.Size = new System.Drawing.Size(166, 85);
+            this.btnUse.TabIndex = 22;
+            this.btnUse.Text = "Use";
+            this.btnUse.UseVisualStyleBackColor = false;
             // 
             // btnMove
             // 
@@ -166,7 +167,7 @@ namespace Skeletown_Game
             this.Controls.Add(this.listMenu);
             this.Controls.Add(this.btnLook);
             this.Controls.Add(this.btnMove);
-            this.Controls.Add(this.btnShow);
+            this.Controls.Add(this.btnUse);
             this.Controls.Add(this.btnTalk);
             this.Controls.Add(this.dgvQuests);
             this.Controls.Add(this.dgvInventory);
@@ -185,7 +186,7 @@ namespace Skeletown_Game
         private System.Windows.Forms.DataGridView dgvInventory;
         private System.Windows.Forms.DataGridView dgvQuests;
         private System.Windows.Forms.Button btnTalk;
-        private System.Windows.Forms.Button btnShow;
+        private System.Windows.Forms.Button btnUse;
         private System.Windows.Forms.Button btnMove;
         private System.Windows.Forms.Button btnLook;
         private System.Windows.Forms.ListBox listMenu;

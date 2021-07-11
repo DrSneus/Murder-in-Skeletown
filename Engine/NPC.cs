@@ -8,11 +8,12 @@ namespace Engine
     {
         public int ID { get; set; }
         public string Name { get; set; }
-
-        public NPC(int id, string name)
+        public List<Dialogue> DialogueTree { get; set; }
+        public NPC(int id, string name, List<Dialogue> dialoguetree)
         {
             ID = id;
             Name = name;
+            DialogueTree = dialoguetree;
         }
     }
 }

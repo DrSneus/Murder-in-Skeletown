@@ -38,7 +38,22 @@ namespace Engine
 
         private static void PopulateNPCs()
         {
-            NPCs.Add(new NPC(NPC_ID_BOUNCER, "Bouncer"));
+            // Bouncer NPC
+            List<Dialogue> BOUNCER_TREE = new List<Dialogue>();
+            BOUNCER_TREE.Add(new Dialogue("Sorry, no one in today unless you're invited.", 0,
+                new string[] { "What's the occasion?", "Let me in. Now", "What do you know about the murder?" },
+                new double[] { 0.1, 0.2, 0.3 }));
+            BOUNCER_TREE.Add(new Dialogue("Boss's birthday, invite only.", 0.1,
+               new string[] { "I see, thanks."},
+               new double[] { 99 }));
+            BOUNCER_TREE.Add(new Dialogue("Ha, thanks for making me laugh", 0.2,
+               new string[] { "Fine, I'm leaving" },
+               new double[] { 99 }));
+            BOUNCER_TREE.Add(new Dialogue("Uhhh..umm..uh nothing. The boss definitely doesn't know anything either!", 0.3,
+               new string[] { "Okay?" },
+               new double[] { 99 }));
+
+            NPCs.Add(new NPC(NPC_ID_BOUNCER, "Bouncer", BOUNCER_TREE));
         }
 
         private static void PopulateQuests()
@@ -64,6 +79,7 @@ namespace Engine
 
             Location nightclub = new Location(LOCATION_ID_NIGHTCLUB,
                 "Bone Dry Bar", "A nightclub popular with young skeletons");
+                nightclub.NPCHere = NPCByID(NPC_ID_BOUNCER);
 
             // Linking locations
             home.AdjacentLocations.Add(citySquare);
@@ -125,6 +141,19 @@ namespace Engine
                 if (location.ID == id)
                 {
                     return location;
+                }
+            }
+
+            return null;
+        }
+
+        public static Dialogue DialogueByID(NPC npc, double dialogueID)
+        {
+            foreach (Dialogue dialogue in npc.DialogueTree)
+            {
+                if (dialogue.ID == dialogueID)
+                {
+                    return dialogue;
                 }
             }
 

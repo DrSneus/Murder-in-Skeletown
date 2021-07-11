@@ -15,9 +15,10 @@ namespace Skeletown_Game
     {
         private Player _player;
         private NPC _currentNPC;
+        private Dialogue _currentDialogue;
         private const int MOVE_ID = 1;
         private const int LOOK_ID = 2;
-        private const int GIVE_ID = 3;
+        private const int USE_ID = 3;
         private const int TALK_ID = 4;
         private int menu_ID = 0;
 
@@ -32,21 +33,36 @@ namespace Skeletown_Game
 
         private void listMenu_SelectedIndexChanged(object sender, EventArgs e)
         {
+            // Moving menu
             if (menu_ID == MOVE_ID)
             {
                 MoveTo((Location)listMenu.SelectedItem);
                 menu_ID = 0;
             }
+
+            // Talking menu
+            else if (menu_ID == TALK_ID)
+            {
+                bool dialogueCheck = DisplayDialogue(Convert.ToDouble(listMenu.SelectedValue.ToString()));
+                
+                // End of dialogue reached
+                if (!dialogueCheck)
+                {
+                    menu_ID = 0;
+                }
+            }
         }
 
         private void btnMove_Click(object sender, EventArgs e)
         {
+            menu_ID = 0;
+            // Adding possible locations, and new locations
             List<Location> moveOptions = _player.VisitedLocations.Union(_player.CurrentLocation.AdjacentLocations).ToList();
             moveOptions.Remove(_player.CurrentLocation);
 
+            // Changing the menu to be based on moveOptions
             listMenu.DataSource = moveOptions;
             listMenu.DisplayMember = "Name";
-
             menu_ID = MOVE_ID;
             listMenu.Visible = true;
         }
@@ -56,6 +72,20 @@ namespace Skeletown_Game
             menu_ID = LOOK_ID;
             rtbMessages.Text = _player.CurrentLocation.Description;
             listMenu.Visible = false;
+        }
+
+        private void btnTalk_Click(object sender, EventArgs e)
+        {
+            menu_ID = 0;
+            // If an NPC exists here
+            if (_currentNPC != null)
+            {
+                menu_ID = TALK_ID;
+                listMenu.Visible = true;
+
+                // NPC Dialogue
+                DisplayDialogue(0.0);
+            }
         }
 
         private void MoveTo(Location newLocation)
@@ -143,21 +173,50 @@ namespace Skeletown_Game
             _currentNPC = null;
             if (newLocation.NPCHere != null)
             {
-                rtbMessages.Text += "You see a " + newLocation.NPCHere.Name +
-                    Environment.NewLine;
-
-                // Make a new NPC, using the values from the standard NPC
-                // in the World.NPC list
-                NPC standardNPC = World.NPCByID(
-                    newLocation.NPCHere.ID);
-
-                _currentNPC = new NPC(standardNPC.ID, standardNPC.Name);
+                _currentNPC = newLocation.NPCHere;
+                // WIP
             }
 
             // Refresh player's inventory list
             UpdateInventoryListInUI();
             // Refresh player's quest list
             UpdateQuestListInUI();
+        }
+
+        private bool DisplayDialogue(double responseID)
+        {
+            menu_ID = 0;
+
+            if (_currentNPC != null)
+            {
+                // Changing the dialogue in response to previous dialogue
+                // Finding dialogue
+                _currentDialogue = World.DialogueByID(_currentNPC, responseID);
+
+                // Dialogue exists
+                if (_currentDialogue != null)
+                {
+                    rtbMessages.Text = _currentDialogue.NPCDialogue;
+
+                    // Giving user dialogue responses
+                    listMenu.DataSource = new BindingSource(_currentDialogue.responseDictionary(), null);
+                    listMenu.DisplayMember = "Value";
+                    listMenu.ValueMember = "Key";
+                    listMenu.Visible = true;
+                    menu_ID = TALK_ID;
+                }
+
+                // No dialogue exists, meaning end of conversation
+                else
+                {
+                    DisplayDialogue(0.0);
+                }
+
+                return true;
+            }
+
+            return false;
+
         }
 
         private void UpdateInventoryListInUI()
@@ -178,6 +237,7 @@ namespace Skeletown_Game
                 }
             }
         }
+
         private void UpdateQuestListInUI()
         {
             dgvQuests.RowHeadersVisible = false;
@@ -193,6 +253,7 @@ namespace Skeletown_Game
                     playerQuest.IsCompleted.ToString() });
             }
         }
+
 
     }
 }
