@@ -63,7 +63,7 @@ namespace Engine
                 "City Square", "Skeletons are walking around the city.");
 
             Location nightclub = new Location(LOCATION_ID_NIGHTCLUB,
-                "Bone Dry", "A nightclub popular with young skeletons");
+                "Bone Dry Bar", "A nightclub popular with young skeletons");
 
             // Linking locations
             home.AdjacentLocations.Add(citySquare);

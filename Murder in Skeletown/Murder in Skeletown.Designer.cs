@@ -29,7 +29,6 @@ namespace Skeletown_Game
         /// </summary>
         private void InitializeComponent()
         {
-            this.rtbLocation = new System.Windows.Forms.RichTextBox();
             this.rtbMessages = new System.Windows.Forms.RichTextBox();
             this.dgvInventory = new System.Windows.Forms.DataGridView();
             this.dgvQuests = new System.Windows.Forms.DataGridView();
@@ -38,18 +37,10 @@ namespace Skeletown_Game
             this.btnMove = new System.Windows.Forms.Button();
             this.btnLook = new System.Windows.Forms.Button();
             this.listMenu = new System.Windows.Forms.ListBox();
+            this.lblLocation = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dgvInventory)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvQuests)).BeginInit();
             this.SuspendLayout();
-            // 
-            // rtbLocation
-            // 
-            this.rtbLocation.Location = new System.Drawing.Point(16, 12);
-            this.rtbLocation.Name = "rtbLocation";
-            this.rtbLocation.ReadOnly = true;
-            this.rtbLocation.Size = new System.Drawing.Size(312, 105);
-            this.rtbLocation.TabIndex = 17;
-            this.rtbLocation.Text = "";
             // 
             // rtbMessages
             // 
@@ -144,11 +135,23 @@ namespace Skeletown_Game
             this.listMenu.TabIndex = 25;
             this.listMenu.SelectedIndexChanged += new System.EventHandler(this.listMenu_SelectedIndexChanged);
             // 
+            // lblLocation
+            // 
+            this.lblLocation.AutoSize = true;
+            this.lblLocation.Font = new System.Drawing.Font("Segoe UI", 20F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.lblLocation.Location = new System.Drawing.Point(16, 9);
+            this.lblLocation.Name = "lblLocation";
+            this.lblLocation.Size = new System.Drawing.Size(262, 54);
+            this.lblLocation.TabIndex = 26;
+            this.lblLocation.Text = "LocationText";
+            this.lblLocation.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
             // Skeletown_Game
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(978, 644);
+            this.Controls.Add(this.lblLocation);
             this.Controls.Add(this.listMenu);
             this.Controls.Add(this.btnLook);
             this.Controls.Add(this.btnMove);
@@ -157,17 +160,16 @@ namespace Skeletown_Game
             this.Controls.Add(this.dgvQuests);
             this.Controls.Add(this.dgvInventory);
             this.Controls.Add(this.rtbMessages);
-            this.Controls.Add(this.rtbLocation);
             this.Name = "Skeletown_Game";
             this.Text = "Murder in Skeletown";
             ((System.ComponentModel.ISupportInitialize)(this.dgvInventory)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvQuests)).EndInit();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
         #endregion
-        private System.Windows.Forms.RichTextBox rtbLocation;
         private System.Windows.Forms.RichTextBox rtbMessages;
         private System.Windows.Forms.DataGridView dgvInventory;
         private System.Windows.Forms.DataGridView dgvQuests;
@@ -176,6 +178,7 @@ namespace Skeletown_Game
         private System.Windows.Forms.Button btnMove;
         private System.Windows.Forms.Button btnLook;
         private System.Windows.Forms.ListBox listMenu;
+        private System.Windows.Forms.Label lblLocation;
     }
 }
 

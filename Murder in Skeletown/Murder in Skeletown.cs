@@ -42,6 +42,7 @@ namespace Skeletown_Game
         private void btnMove_Click(object sender, EventArgs e)
         {
             List<Location> moveOptions = _player.VisitedLocations.Union(_player.CurrentLocation.AdjacentLocations).ToList();
+            moveOptions.Remove(_player.CurrentLocation);
 
             listMenu.DataSource = moveOptions;
             listMenu.DisplayMember = "Name";
@@ -75,8 +76,7 @@ namespace Skeletown_Game
             listMenu.Visible = false;
 
             // Display current location name and description
-            rtbLocation.Text = newLocation.Name + Environment.NewLine;
-            rtbLocation.Text += newLocation.Description + Environment.NewLine;
+            lblLocation.Text = newLocation.Name + Environment.NewLine;
 
             // Does the location have a quest?
             if (newLocation.QuestAvailableHere != null)
@@ -193,7 +193,6 @@ namespace Skeletown_Game
                     playerQuest.IsCompleted.ToString() });
             }
         }
-
 
     }
 }
