@@ -64,14 +64,14 @@ namespace Skeletown_Game
             listMenu.DataSource = moveOptions;
             listMenu.DisplayMember = "Name";
             menu_ID = MOVE_ID;
-            listMenu.Visible = true;
+            enableUserMenu(true);
         }
 
         private void btnLook_Click(object sender, EventArgs e)
         {
             menu_ID = LOOK_ID;
             rtbMessages.Text = _player.CurrentLocation.Description;
-            listMenu.Visible = false;
+            enableUserMenu(false);
         }
 
         private void btnTalk_Click(object sender, EventArgs e)
@@ -81,10 +81,38 @@ namespace Skeletown_Game
             if (_currentNPC != null)
             {
                 menu_ID = TALK_ID;
-                listMenu.Visible = true;
+                enableUserMenu(true);
 
                 // NPC Dialogue
                 DisplayDialogue(0.0);
+            }
+
+            // Default message for no NPC
+            else
+            {
+                rtbMessages.Text = "There's no one to talk to...";
+                enableUserMenu(false);
+            }
+        }
+
+        private void btnUse_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void enableUserMenu(bool enable)
+        {
+            // Enable the user menu
+            if (enable)
+            {
+                listMenu.Visible = true;
+                listMenu.Enabled = true;
+            }
+
+            else
+            {
+                listMenu.Visible = false;
+                listMenu.Enabled = false;
             }
         }
 
@@ -192,7 +220,6 @@ namespace Skeletown_Game
                     playerQuest.IsCompleted.ToString() });
             }
         }
-
 
     }
 }
