@@ -16,16 +16,15 @@ namespace Skeletown_Game
         private Player _player;
         private NPC _currentNPC;
         private Dialogue _currentDialogue;
-        private const int MOVE_ID = 1;
-        private const int LOOK_ID = 2;
-        private const int USE_ID = 3;
-        private const int TALK_ID = 4;
+        private const int LOOK_ID = 1;
+        private const int TALK_ID = 2;
+        private const int MOVE_ID = 3;
         private int menu_ID = 0;
 
         public Skeletown_Game()
         {
             InitializeComponent();
-             _player = new Player("Sam");
+             _player = new Player("UserName");
             _player.Inventory.Add(new InventoryItem(
                 World.ItemByID(World.ITEM_ID_GUN), 1));
             MoveTo(World.LocationByID(World.LOCATION_ID_HOME));
@@ -36,8 +35,8 @@ namespace Skeletown_Game
             // Moving menu
             if (menu_ID == MOVE_ID)
             {
-                MoveTo((Location)listMenu.SelectedItem);
                 menu_ID = 0;
+                MoveTo((Location)listMenu.SelectedItem);
             }
 
             // Talking menu
@@ -49,7 +48,35 @@ namespace Skeletown_Game
                 if (!dialogueCheck)
                 {
                     menu_ID = 0;
+                    listMenu.DataSource = null;
                 }
+            }
+        }
+
+        private void btnLook_Click(object sender, EventArgs e)
+        {
+            menu_ID = LOOK_ID;
+            rtbMessages.Text = _player.CurrentLocation.Description;
+            listMenu.DataSource = null;
+        }
+
+        private void btnTalk_Click(object sender, EventArgs e)
+        {
+            menu_ID = 0;
+            // If an NPC exists here
+            if (_currentNPC != null)
+            {
+                menu_ID = TALK_ID;
+
+                // NPC Dialogue
+                DisplayDialogue(0.0);
+            }
+
+            // Default message for no NPC
+            else
+            {
+                rtbMessages.Text = "There's no one to talk to...";
+                listMenu.DataSource = null;
             }
         }
 
@@ -64,56 +91,6 @@ namespace Skeletown_Game
             listMenu.DataSource = moveOptions;
             listMenu.DisplayMember = "Name";
             menu_ID = MOVE_ID;
-            enableUserMenu(true);
-        }
-
-        private void btnLook_Click(object sender, EventArgs e)
-        {
-            menu_ID = LOOK_ID;
-            rtbMessages.Text = _player.CurrentLocation.Description;
-            enableUserMenu(false);
-        }
-
-        private void btnTalk_Click(object sender, EventArgs e)
-        {
-            menu_ID = 0;
-            // If an NPC exists here
-            if (_currentNPC != null)
-            {
-                menu_ID = TALK_ID;
-                enableUserMenu(true);
-
-                // NPC Dialogue
-                DisplayDialogue(0.0);
-            }
-
-            // Default message for no NPC
-            else
-            {
-                rtbMessages.Text = "There's no one to talk to...";
-                enableUserMenu(false);
-            }
-        }
-
-        private void btnUse_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void enableUserMenu(bool enable)
-        {
-            // Enable the user menu
-            if (enable)
-            {
-                listMenu.Visible = true;
-                listMenu.Enabled = true;
-            }
-
-            else
-            {
-                listMenu.Visible = false;
-                listMenu.Enabled = false;
-            }
         }
 
         private void MoveTo(Location newLocation)
@@ -132,7 +109,7 @@ namespace Skeletown_Game
             
             // Clear text
             rtbMessages.Text = "";
-            listMenu.Visible = false;
+            listMenu.DataSource = null;
 
             // Display current location name and description
             lblLocation.Text = newLocation.Name;
@@ -142,12 +119,20 @@ namespace Skeletown_Game
             if (newLocation.NPCHere != null)
             {
                 _currentNPC = newLocation.NPCHere;
+                pbNPC.Visible = true;
+                pbNPC.Image = (Properties.Resources.Bouncer);
+                rtbMessages.Location = new Point(118, 365);
+                rtbMessages.Size = new Size(608, 101);
+            }
+            else
+            {
+                pbNPC.Visible = false;
+                rtbMessages.Location = new Point(12, 365);
+                rtbMessages.Size = new Size(714, 101);
             }
 
             // Refresh player's inventory list
             UpdateInventoryListInUI();
-            // Refresh player's quest list
-            UpdateQuestListInUI();
         }
 
         private bool DisplayDialogue(double responseID)
@@ -189,35 +174,16 @@ namespace Skeletown_Game
         private void UpdateInventoryListInUI()
         {
             dgvInventory.RowHeadersVisible = false;
-            dgvInventory.ColumnCount = 2;
-            dgvInventory.Columns[0].Name = "Name";
-            dgvInventory.Columns[0].Width = 197;
-            dgvInventory.Columns[1].Name = "Quantity";
+            dgvInventory.ColumnCount = 1;
+            dgvInventory.Columns[0].Width = 540;
             dgvInventory.Rows.Clear();
             foreach (InventoryItem inventoryItem in _player.Inventory)
             {
                 if (inventoryItem.Quantity > 0)
                 {
                     dgvInventory.Rows.Add(new[] {
-                        inventoryItem.Details.Name,
-                        inventoryItem.Quantity.ToString() });
+                        inventoryItem.Details.Name + ": " + inventoryItem.Details.Description });
                 }
-            }
-        }
-
-        private void UpdateQuestListInUI()
-        {
-            dgvQuests.RowHeadersVisible = false;
-            dgvQuests.ColumnCount = 2;
-            dgvQuests.Columns[0].Name = "Name";
-            dgvQuests.Columns[0].Width = 197;
-            dgvQuests.Columns[1].Name = "Done?";
-            dgvQuests.Rows.Clear();
-            foreach (PlayerQuest playerQuest in _player.Quests)
-            {
-                dgvQuests.Rows.Add(new[] {
-                    playerQuest.Details.Name,
-                    playerQuest.IsCompleted.ToString() });
             }
         }
 
