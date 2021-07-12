@@ -33,7 +33,7 @@ namespace Engine
 
         private static void PopulateItems()
         {
-            Items.Add(new Item(ITEM_ID_GUN, "An old gun"));
+            Items.Add(new Item(ITEM_ID_GUN, "Today's Newspaper", "It features the obituary for Benny Bones"));
         }
 
         private static void PopulateNPCs()
@@ -41,7 +41,7 @@ namespace Engine
             // Bouncer NPC
             List<Dialogue> BOUNCER_TREE = new List<Dialogue>();
             BOUNCER_TREE.Add(new Dialogue("Sorry, no one in today unless you're invited.", 0,
-                new string[] { "What's the occasion?", "Let me in. Now", "What do you know about the murder?" },
+                new string[] { "What's the occasion?", "Let me in. Now", "What do you know about Benny Bones' death?" },
                 new double[] { 0.1, 0.2, 0.3 }));
             BOUNCER_TREE.Add(new Dialogue("Boss's birthday, invite only.", 0.1,
                new string[] { "I see, thanks."},
@@ -58,8 +58,8 @@ namespace Engine
 
         private static void PopulateQuests()
         {
-            Quest solveMurder = new Quest(QUEST_ID_CLEAR_SOLVE_MURDER, "Solve the Murder",
-                "Find out who's behind the murder in Skeletown");
+            Quest solveMurder = new Quest(QUEST_ID_CLEAR_SOLVE_MURDER, "Why did Benny Bones die?",
+                "I should try and investigate Benny's body");
 
             solveMurder.QuestCompletionItems.Add(new QuestCompletionItem(
                 ItemByID(ITEM_ID_GUN), 1));
