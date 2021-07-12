@@ -95,6 +95,7 @@ namespace Skeletown_Game
             {
                 return;
             }
+
             // Mark location as having been entered
             _player.IsNewLocation(newLocation);
 
@@ -106,75 +107,13 @@ namespace Skeletown_Game
             listMenu.Visible = false;
 
             // Display current location name and description
-            lblLocation.Text = newLocation.Name + Environment.NewLine;
-
-            // Does the location have a quest?
-            if (newLocation.QuestAvailableHere != null)
-            {
-                // See if the player already has the quest, and if they've completed it
-                bool playerAlreadyHasQuest = _player.HasThisQuest(newLocation.QuestAvailableHere);
-                if (playerAlreadyHasQuest)
-                {
-                    // See if the player has completed the quest
-                    bool playerAlreadyCompletedQuest = _player.CompletedThisQuest(newLocation.QuestAvailableHere);
-
-                    // If the player has not completed the quest yet
-                    if (!playerAlreadyCompletedQuest)
-                    {
-                        // See if the player has all the items needed to complete the quest
-                        bool playerHasAllItemsToCompleteQuest = _player.HasAllQuestCompletionItems(newLocation.QuestAvailableHere);
-
-                        // The player has all items required to complete the quest
-                        if (playerHasAllItemsToCompleteQuest)
-                        {
-                            // Display message
-                            rtbMessages.Text = "You've completed the \"" +
-                                newLocation.QuestAvailableHere.Name +
-                                    "\" quest." + Environment.NewLine;
-
-                            // Remove quest items from inventory
-                            _player.RemoveQuestCompletionItems(newLocation.QuestAvailableHere);
-
-                            // Give quest rewards
-                            if (newLocation.QuestAvailableHere.RewardItem != null)
-                            {
-                                rtbMessages.Text += "You receive: " + Environment.NewLine;
-                                rtbMessages.Text +=
-                                    newLocation.QuestAvailableHere.RewardItem.Name +
-                                        Environment.NewLine;
-                                rtbMessages.Text += Environment.NewLine;
-
-                                // Add the reward item to the player's inventory
-                                _player.AddItemToInventory(newLocation.QuestAvailableHere.RewardItem);
-                            }
-
-                            // Mark the quest as completed
-                            _player.MarkQuestCompleted(newLocation.QuestAvailableHere);
-                        }
-                    }
-                }
-
-                // The player does not already have the quest
-                else
-                {
-                    // Display the messages
-                    rtbMessages.Text += "You received the quest: \"" +
-                        newLocation.QuestAvailableHere.Name + "\""+ Environment.NewLine;
-
-                    rtbMessages.Text += newLocation.QuestAvailableHere.Description +
-                        Environment.NewLine;
-
-                    // Add the quest to the player's quest list
-                    _player.Quests.Add(new PlayerQuest(newLocation.QuestAvailableHere));
-                }
-            }
+            lblLocation.Text = newLocation.Name;
 
             // Does the location have a NPC?
             _currentNPC = null;
             if (newLocation.NPCHere != null)
             {
                 _currentNPC = newLocation.NPCHere;
-                // WIP
             }
 
             // Refresh player's inventory list
