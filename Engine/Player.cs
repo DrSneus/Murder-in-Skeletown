@@ -8,7 +8,7 @@ namespace Engine
     {
         public string Name { get; set; }
         public List<InventoryItem> Inventory { get; set; }
-        public List<PlayerQuest> Quests { get; set; }
+        public List<PlayerClue> Clues { get; set; }
         public Location CurrentLocation { get; set; }
 
         public List<Location> VisitedLocations = new List<Location>();
@@ -17,14 +17,14 @@ namespace Engine
         {
             Name = name;
             Inventory = new List<InventoryItem>();
-            Quests = new List<PlayerQuest>();
+            Clues = new List<PlayerClue>();
         }
 
-        public bool HasThisQuest(Quest quest)
+        public bool HasThisClue(Clue clue)
         {
-            foreach (PlayerQuest playerQuest in Quests)
+            foreach (PlayerClue playerClue in Clues)
             {
-                if (playerQuest.Details.ID == quest.ID)
+                if (playerClue.Details.ID == clue.ID)
                 {
                     return true;
                 }
@@ -32,23 +32,23 @@ namespace Engine
             return false;
         }
 
-        public bool CompletedThisQuest(Quest quest)
+        public bool CompletedThisClue(Clue clue)
         {
-            foreach (PlayerQuest playerQuest in Quests)
+            foreach (PlayerClue playerClue in Clues)
             {
-                if (playerQuest.Details.ID == quest.ID)
+                if (playerClue.Details.ID == clue.ID)
                 {
-                    return playerQuest.IsCompleted;
+                    return playerClue.IsCompleted;
                 }
             }
             return false;
         }
 
-        public bool HasAllQuestCompletionItems(Quest quest)
+        public bool HasAllClueCompletionItems(Clue clue)
         {
             // See if the player has all the items needed
-            // to complete the quest here
-            foreach (QuestCompletionItem qci in quest.QuestCompletionItems)
+            // to complete the clue here
+            foreach (ClueCompletionItem qci in clue.ClueCompletionItems)
             {
                 bool foundItemInPlayersInventory = false;
                 // Search for items in the player's inventory
@@ -82,16 +82,16 @@ namespace Engine
             return true;
         }
 
-        public void RemoveQuestCompletionItems(Quest quest)
+        public void RemoveClueCompletionItems(Clue clue)
         {
-            foreach (QuestCompletionItem qci in quest.QuestCompletionItems)
+            foreach (ClueCompletionItem qci in clue.ClueCompletionItems)
             {
                 foreach (InventoryItem ii in Inventory)
                 {
                     if (ii.Details.ID == qci.Details.ID)
                     {
                         // Subtract the quantity from the player's
-                        // inventory that was needed to complete the quest
+                        // inventory that was needed to complete the clue
                         ii.Quantity -= qci.Quantity;
                         break;
                     }
@@ -116,16 +116,16 @@ namespace Engine
             Inventory.Add(new InventoryItem(itemToAdd, 1));
         }
 
-        public void MarkQuestCompleted(Quest quest)
+        public void MarkClueCompleted(Clue clue)
         {
-            // Find the quest in the player's quest list
-            foreach (PlayerQuest pq in Quests)
+            // Find the clue in the player's clue list
+            foreach (PlayerClue pq in Clues)
             {
-                if (pq.Details.ID == quest.ID)
+                if (pq.Details.ID == clue.ID)
                 {
                     // Mark it as completed
                     pq.IsCompleted = true;
-                    // We found the quest, so return
+                    // We found the clue, so return
                     return;
                 }
             }

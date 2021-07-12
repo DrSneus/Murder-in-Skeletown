@@ -4,21 +4,22 @@ using System.Text;
 
 namespace Engine
 {
-    public class Quest
+    public class Clue
     {
         public int ID { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
         public Item RewardItem { get; set; }
-        public List<QuestCompletionItem> QuestCompletionItems { get; set; }
+        public List<ClueCompletionItem> ClueCompletionItems { get; set; }
 
-        public Quest(int id, string name, string description, Item rewardItem = null)
+
+        public Clue(int id, string name, string description, Item rewardItem = null)
         {
             ID = id;
             Name = name;
             Description = description;
             RewardItem = rewardItem;
-            QuestCompletionItems = new List<QuestCompletionItem>();
+            ClueCompletionItems = new List<ClueCompletionItem>();
         }
     }
 }

@@ -10,20 +10,20 @@ namespace Engine
         public string Name { get; set; }
         public string Description { get; set; }
         public bool IsLocked { get; set; }
-        public Quest QuestAvailableHere { get; set; }
+        public Clue ClueAvailableHere { get; set; }
         public NPC NPCHere { get; set; }
         public List<Location> AdjacentLocations { get; set; }
 
         public Location(int id, string name, string description,
             bool isLocked = false,
-            Quest questAvailableHere = null,
+            Clue clueAvailableHere = null,
             NPC npcHere = null)
         {
             ID = id;
             Name = name;
             Description = description;
             IsLocked = isLocked;
-            QuestAvailableHere = questAvailableHere;
+            ClueAvailableHere = clueAvailableHere;
             NPCHere = npcHere;
             AdjacentLocations = new List<Location>();
         }

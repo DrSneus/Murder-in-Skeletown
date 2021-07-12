@@ -10,14 +10,14 @@ namespace Engine
     {
         public static readonly List<Item> Items = new List<Item>();
         public static readonly List<NPC> NPCs = new List<NPC>();
-        public static readonly List<Quest> Quests = new List<Quest>();
+        public static readonly List<Clue> Clues = new List<Clue>();
         public static readonly List<Location> Locations = new List<Location>();
 
         public const int ITEM_ID_GUN = 1;
 
         public const int NPC_ID_BOUNCER = 1;
 
-        public const int QUEST_ID_CLEAR_SOLVE_MURDER = 1;
+        public const int CLUE_ID_CLEAR_SOLVE_MURDER = 1;
 
         public const int LOCATION_ID_HOME = 1;
         public const int LOCATION_ID_CITY_SQUARE = 2;
@@ -27,7 +27,7 @@ namespace Engine
         {
             PopulateItems();
             PopulateNPCs();
-            PopulateQuests();
+            PopulateClues();
             PopulateLocations();
         }
 
@@ -56,14 +56,14 @@ namespace Engine
             NPCs.Add(new NPC(NPC_ID_BOUNCER, "Bouncer", BOUNCER_TREE));
         }
 
-        private static void PopulateQuests()
+        private static void PopulateClues()
         {
-            Quest solveMurder = new Quest(QUEST_ID_CLEAR_SOLVE_MURDER, "Why did Benny Bones die?",
+            Clue solveMurder = new Clue(CLUE_ID_CLEAR_SOLVE_MURDER, "Why did Benny Bones die?",
                 "I should try and investigate Benny's body");
 
-            solveMurder.QuestCompletionItems.Add(new QuestCompletionItem(
+            solveMurder.ClueCompletionItems.Add(new ClueCompletionItem(
                 ItemByID(ITEM_ID_GUN), 1));
-            Quests.Add(solveMurder);
+            Clues.Add(solveMurder);
         }
 
         private static void PopulateLocations()
@@ -72,7 +72,7 @@ namespace Engine
             Location home = new Location(LOCATION_ID_HOME, "The Office",
                 "Your place of work, located just outside Skeletown");
 
-            home.QuestAvailableHere = QuestByID(QUEST_ID_CLEAR_SOLVE_MURDER);
+            home.ClueAvailableHere = ClueByID(CLUE_ID_CLEAR_SOLVE_MURDER);
 
             Location citySquare = new Location(LOCATION_ID_CITY_SQUARE,
                 "City Square", "Skeletons are walking around the city.");
@@ -121,13 +121,13 @@ namespace Engine
             return null;
         }
 
-        public static Quest QuestByID(int id)
+        public static Clue ClueByID(int id)
         {
-            foreach (Quest quest in Quests)
+            foreach (Clue clue in Clues)
             {
-                if (quest.ID == id)
+                if (clue.ID == id)
                 {
-                    return quest;
+                    return clue;
                 }
             }
 

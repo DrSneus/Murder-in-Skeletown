@@ -4,12 +4,12 @@ using System.Text;
 
 namespace Engine
 {
-    public class PlayerQuest
+    public class PlayerClue
     {
-        public Quest Details { get; set; }
+        public Clue Details { get; set; }
         public bool IsCompleted { get; set; }
 
-        public PlayerQuest(Quest details)
+        public PlayerClue(Clue details)
         {
             Details = details;
             IsCompleted = false;
