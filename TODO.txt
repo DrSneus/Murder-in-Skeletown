@@ -1,6 +1,4 @@
 TO DO:
-- Option Menu
-	- Item "use" system
 - NPCs
 	- Art (pixel?)
 - Quests
@@ -20,3 +18,7 @@ DONE:
 	- Travel option (dropdown menu to select location?)
 	- Full dialogue engine
 	- Look around option
+- Item Menu
+	- Description section
+- Art
+	- Began pixel art for NPCs
