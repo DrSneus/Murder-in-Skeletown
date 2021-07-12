@@ -115,24 +115,39 @@ namespace Skeletown_Game
             lblLocation.Text = newLocation.Name;
 
             // Does the location have a NPC?
-            _currentNPC = null;
-            if (newLocation.NPCHere != null)
-            {
-                _currentNPC = newLocation.NPCHere;
-                pbNPC.Visible = true;
-                pbNPC.Image = (Properties.Resources.Bouncer);
-                rtbMessages.Location = new Point(118, 365);
-                rtbMessages.Size = new Size(608, 101);
-            }
-            else
-            {
-                pbNPC.Visible = false;
-                rtbMessages.Location = new Point(12, 365);
-                rtbMessages.Size = new Size(714, 101);
-            }
+            _currentNPC = newLocation.NPCHere;
+            SetUpNPC(_currentNPC);
+
 
             // Refresh player's inventory list
             UpdateInventoryListInUI();
+            UpdateClueListInUI();
+        }
+
+        private void SetUpNPC(NPC npcCheck)
+        {
+            // NPC
+            if (npcCheck != null)
+            {
+                pbNPC.Visible = true;
+                pbNPC.Image = (Image)Properties.Resources.ResourceManager.GetObject(_currentNPC.Name, Properties.Resources.Culture);
+                rtbMessages.Location = new Point(118, 512);
+                rtbMessages.Size = new Size(608, 101);
+
+                btnLook.Visible = false;
+                btnTalk.Visible = true;
+            }
+
+            // No NPC
+            else
+            {
+                pbNPC.Visible = false;
+                rtbMessages.Location = new Point(12, 512);
+                rtbMessages.Size = new Size(714, 101);
+                btnLook.Visible = true;
+                btnTalk.Visible = false;
+            }
+
         }
 
         private bool DisplayDialogue(double responseID)
@@ -179,13 +194,22 @@ namespace Skeletown_Game
             dgvInventory.Rows.Clear();
             foreach (InventoryItem inventoryItem in _player.Inventory)
             {
-                if (inventoryItem.Quantity > 0)
-                {
-                    dgvInventory.Rows.Add(new[] {
-                        inventoryItem.Details.Name + ": " + inventoryItem.Details.Description });
-                }
+                dgvInventory.Rows.Add(new[] {
+                    inventoryItem.Details.Name + ": " + inventoryItem.Details.Description });
             }
         }
 
+        private void UpdateClueListInUI()
+        {
+            dgvClues.RowHeadersVisible = false;
+            dgvClues.ColumnCount = 1;
+            dgvClues.Columns[0].Width = 540;
+            dgvClues.Rows.Clear();
+            foreach (PlayerClue pClue in _player.Clues)
+            {
+                dgvClues.Rows.Add(new[] {
+                    pClue.Details.Name});
+            }
+        }
     }
 }
