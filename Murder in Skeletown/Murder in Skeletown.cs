@@ -26,9 +26,9 @@ namespace Skeletown_Game
         {
             InitializeComponent();
              _player = new Player("Sam");
-            MoveTo(World.LocationByID(World.LOCATION_ID_HOME));
             _player.Inventory.Add(new InventoryItem(
                 World.ItemByID(World.ITEM_ID_GUN), 1));
+            MoveTo(World.LocationByID(World.LOCATION_ID_HOME));
         }
 
         private void listMenu_SelectedIndexChanged(object sender, EventArgs e)
