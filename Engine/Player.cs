@@ -7,7 +7,7 @@ namespace Engine
     public class Player
     {
         public string Name { get; set; }
-        public List<InventoryItem> Inventory { get; set; }
+        public List<Item> Inventory { get; set; }
         public List<Clue> Clues { get; set; }
         public Location CurrentLocation { get; set; }
 
@@ -16,8 +16,27 @@ namespace Engine
         public Player(string name)
         {
             Name = name;
-            Inventory = new List<InventoryItem>();
+            Inventory = new List<Item>();
             Clues = new List<Clue>();
+        }
+
+        public void checkForClues(Dialogue dialogue)
+        {
+            foreach (Clue clue in World.Clues)
+            {
+                if (clue.ClueFlag == dialogue)
+                {
+                    if (!HasThisClue(clue))
+                    {
+                        Clues.Add(clue);
+                    }
+                    else
+                    {
+                        return;
+                    }
+
+                }
+            }
         }
 
         public bool HasThisClue(Clue clue)
@@ -34,74 +53,47 @@ namespace Engine
 
         public bool HasAllClueCompletionItems(Clue clue)
         {
-            // See if the player has all the items needed
-            // to complete the clue here
-            foreach (ClueCompletionItem qci in clue.ClueCompletionItems)
+            // See if the player has the item to solve the clue
+            bool playerHasItem = false;
+
+            // Search for items in the player's inventory
+            foreach (Item i in Inventory)
             {
-                bool foundItemInPlayersInventory = false;
-                // Search for items in the player's inventory
-                foreach (InventoryItem ii in Inventory)
+                // The player has the item in their inventory
+                if (i.ID == clue.CompletionItem.ID)
                 {
-                    // The player has the item in their inventory
-                    if (ii.Details.ID == qci.Details.ID)
-                    {
-                        foundItemInPlayersInventory = true;
-                        // The player has enough
-                        if (ii.Quantity >= qci.Quantity)
-                        {
-                            break;
-                        }
-
-                        // The player does not have enough
-                        else
-                        {
-                            return false;
-                        }
-                    }
-                }
-
-                // Player is missing a necessary itmm
-                if (!foundItemInPlayersInventory)
-                {
-                    return false;
+                    playerHasItem = true;
+                    break;
                 }
             }
-            // Player has all required items
-            return true;
+
+            return playerHasItem;
         }
 
         public void RemoveClueCompletionItems(Clue clue)
         {
-            foreach (ClueCompletionItem qci in clue.ClueCompletionItems)
+            foreach (Item i in Inventory)
             {
-                foreach (InventoryItem ii in Inventory)
+                if (i.ID == clue.CompletionItem.ID)
                 {
-                    if (ii.Details.ID == qci.Details.ID)
-                    {
-                        // Subtract the quantity from the player's
-                        // inventory that was needed to complete the clue
-                        ii.Quantity -= qci.Quantity;
-                        break;
-                    }
+                    Inventory.Remove(i);
+                    break;
                 }
             }
         }
 
         public void AddItemToInventory(Item itemToAdd)
         {
-            foreach (InventoryItem ii in Inventory)
+            foreach (Item i in Inventory)
             {
-                if (ii.Details.ID == itemToAdd.ID)
+                // If the player has the item, skip adding it
+                if (i.ID == itemToAdd.ID)
                 {
-                    // They have the item in their inventory, so increase
-                    // the quantity by one
-                    ii.Quantity++;
                     return;
                 }
             }
-            // They didn't have the item, so add it to their inventory,
-            // with a quantity of 1
-            Inventory.Add(new InventoryItem(itemToAdd, 1));
+            // They didn't have the item, so add it to their inventory
+            Inventory.Add(itemToAdd);
         }
 
         public bool IsNewLocation(Location location)

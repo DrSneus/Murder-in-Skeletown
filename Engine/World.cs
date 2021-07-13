@@ -13,7 +13,7 @@ namespace Engine
         public static readonly List<Clue> Clues = new List<Clue>();
         public static readonly List<Location> Locations = new List<Location>();
 
-        public const int ITEM_ID_GUN = 1;
+        public const int ITEM_ID_NEWS = 1;
 
         public const int NPC_ID_BOUNCER = 1;
 
@@ -33,7 +33,7 @@ namespace Engine
 
         private static void PopulateItems()
         {
-            Items.Add(new Item(ITEM_ID_GUN, "Today's Newspaper", "It features the obituary for Benny Bones"));
+            Items.Add(new Item(ITEM_ID_NEWS, "Today's Newspaper", "It features the obituary for Benny Bones"));
         }
 
         private static void PopulateNPCs()
@@ -60,10 +60,9 @@ namespace Engine
         {
             Clue solveMurder = new Clue(CLUE_ID_CLEAR_SOLVE_MURDER, "Why is the bar closed?",
                 "The bouncer seemed on edge, maybe he's hiding the real reason the bar is closed",
+                ItemByID(ITEM_ID_NEWS),
                 DialogueByID(NPCByID(NPC_ID_BOUNCER), 0.3));
 
-            solveMurder.ClueCompletionItems.Add(new ClueCompletionItem(
-                ItemByID(ITEM_ID_GUN), 1));
             Clues.Add(solveMurder);
         }
 

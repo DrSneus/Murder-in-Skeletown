@@ -25,8 +25,7 @@ namespace Skeletown_Game
         {
             InitializeComponent();
              _player = new Player("UserName");
-            _player.Inventory.Add(new InventoryItem(
-                World.ItemByID(World.ITEM_ID_GUN), 1));
+            _player.Inventory.Add(World.ItemByID(World.ITEM_ID_NEWS));
             MoveTo(World.LocationByID(World.LOCATION_ID_HOME));
         }
 
@@ -173,7 +172,8 @@ namespace Skeletown_Game
                     menu_ID = TALK_ID;
 
                     // Checking for clues
-                    checkForClues();
+                    _player.checkForClues(_currentDialogue);
+                    UpdateClueListInUI();
                 }
 
                 // No dialogue exists, meaning end of conversation
@@ -189,36 +189,16 @@ namespace Skeletown_Game
 
         }
 
-        private void checkForClues()
-        {
-            foreach (Clue clue in World.Clues)
-            {
-                if (clue.ClueFlag == _currentDialogue)
-                {
-                    if(!_player.HasThisClue(clue))
-                    {
-                        _player.Clues.Add(clue);
-                        UpdateClueListInUI();
-                    }
-                    else
-                    {
-                        return;
-                    }
-
-                }
-            }
-        }
-
         private void UpdateInventoryListInUI()
         {
             dgvInventory.RowHeadersVisible = false;
             dgvInventory.ColumnCount = 1;
             dgvInventory.Columns[0].Width = 540;
             dgvInventory.Rows.Clear();
-            foreach (InventoryItem inventoryItem in _player.Inventory)
+            foreach (Item i in _player.Inventory)
             {
                 dgvInventory.Rows.Add(new[] {
-                    inventoryItem.Details.Name + ": " + inventoryItem.Details.Description });
+                    i.Name + ": " + i.Description });
             }
         }
 
