@@ -8,7 +8,7 @@ namespace Engine
     {
         public string Name { get; set; }
         public List<InventoryItem> Inventory { get; set; }
-        public List<PlayerClue> Clues { get; set; }
+        public List<Clue> Clues { get; set; }
         public Location CurrentLocation { get; set; }
 
         public List<Location> VisitedLocations = new List<Location>();
@@ -17,28 +17,16 @@ namespace Engine
         {
             Name = name;
             Inventory = new List<InventoryItem>();
-            Clues = new List<PlayerClue>();
+            Clues = new List<Clue>();
         }
 
         public bool HasThisClue(Clue clue)
         {
-            foreach (PlayerClue playerClue in Clues)
+            foreach (Clue playerClue in Clues)
             {
-                if (playerClue.Details.ID == clue.ID)
+                if (playerClue.ID == clue.ID)
                 {
                     return true;
-                }
-            }
-            return false;
-        }
-
-        public bool CompletedThisClue(Clue clue)
-        {
-            foreach (PlayerClue playerClue in Clues)
-            {
-                if (playerClue.Details.ID == clue.ID)
-                {
-                    return playerClue.IsCompleted;
                 }
             }
             return false;
@@ -114,21 +102,6 @@ namespace Engine
             // They didn't have the item, so add it to their inventory,
             // with a quantity of 1
             Inventory.Add(new InventoryItem(itemToAdd, 1));
-        }
-
-        public void MarkClueCompleted(Clue clue)
-        {
-            // Find the clue in the player's clue list
-            foreach (PlayerClue pq in Clues)
-            {
-                if (pq.Details.ID == clue.ID)
-                {
-                    // Mark it as completed
-                    pq.IsCompleted = true;
-                    // We found the clue, so return
-                    return;
-                }
-            }
         }
 
         public bool IsNewLocation(Location location)

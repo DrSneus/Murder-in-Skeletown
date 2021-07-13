@@ -58,8 +58,9 @@ namespace Engine
 
         private static void PopulateClues()
         {
-            Clue solveMurder = new Clue(CLUE_ID_CLEAR_SOLVE_MURDER, "Why did Benny Bones die?",
-                "I should try and investigate Benny's body");
+            Clue solveMurder = new Clue(CLUE_ID_CLEAR_SOLVE_MURDER, "Why is the bar closed?",
+                "The bouncer seemed on edge, maybe he's hiding the real reason the bar is closed",
+                DialogueByID(NPCByID(NPC_ID_BOUNCER), 0.3));
 
             solveMurder.ClueCompletionItems.Add(new ClueCompletionItem(
                 ItemByID(ITEM_ID_GUN), 1));
@@ -126,6 +127,19 @@ namespace Engine
             foreach (Clue clue in Clues)
             {
                 if (clue.ID == id)
+                {
+                    return clue;
+                }
+            }
+
+            return null;
+        }
+
+        public static Clue ClueByDialogue(Dialogue dialogue)
+        {
+            foreach (Clue clue in Clues)
+            {
+                if (clue.ClueFlag == dialogue)
                 {
                     return clue;
                 }

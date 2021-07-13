@@ -171,6 +171,9 @@ namespace Skeletown_Game
                     listMenu.ValueMember = "Key";
                     listMenu.Visible = true;
                     menu_ID = TALK_ID;
+
+                    // Checking for clues
+                    checkForClues();
                 }
 
                 // No dialogue exists, meaning end of conversation
@@ -184,6 +187,26 @@ namespace Skeletown_Game
 
             return false;
 
+        }
+
+        private void checkForClues()
+        {
+            foreach (Clue clue in World.Clues)
+            {
+                if (clue.ClueFlag == _currentDialogue)
+                {
+                    if(!_player.HasThisClue(clue))
+                    {
+                        _player.Clues.Add(clue);
+                        UpdateClueListInUI();
+                    }
+                    else
+                    {
+                        return;
+                    }
+
+                }
+            }
         }
 
         private void UpdateInventoryListInUI()
@@ -205,10 +228,10 @@ namespace Skeletown_Game
             dgvClues.ColumnCount = 1;
             dgvClues.Columns[0].Width = 540;
             dgvClues.Rows.Clear();
-            foreach (PlayerClue pClue in _player.Clues)
+            foreach (Clue pClue in _player.Clues)
             {
                 dgvClues.Rows.Add(new[] {
-                    pClue.Details.Name});
+                    pClue.Name});
             }
         }
     }

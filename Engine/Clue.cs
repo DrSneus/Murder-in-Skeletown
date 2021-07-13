@@ -11,15 +11,16 @@ namespace Engine
         public string Description { get; set; }
         public Item RewardItem { get; set; }
         public List<ClueCompletionItem> ClueCompletionItems { get; set; }
+        public Dialogue ClueFlag { get; set; }
 
-
-        public Clue(int id, string name, string description, Item rewardItem = null)
+        public Clue(int id, string name, string description, Dialogue dialogue, Item rewardItem = null)
         {
             ID = id;
             Name = name;
             Description = description;
             RewardItem = rewardItem;
             ClueCompletionItems = new List<ClueCompletionItem>();
+            ClueFlag = dialogue;
         }
     }
 }
