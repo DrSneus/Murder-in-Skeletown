@@ -10,31 +10,36 @@ namespace Engine
     {
         public static readonly List<Item> Items = new List<Item>();
         public static readonly List<NPC> NPCs = new List<NPC>();
-        public static readonly List<Clue> Clues = new List<Clue>();
         public static readonly List<Location> Locations = new List<Location>();
+        public static readonly List<Clue> Clues = new List<Clue>();
 
         public const int ITEM_ID_NEWS = 1;
+        public const int ITEM_ID_BEER = 2;
 
         public const int NPC_ID_BOUNCER = 1;
 
-        public const int CLUE_ID_CLEAR_SOLVE_MURDER = 1;
+        public const int CLUE_ID_SOLVE_MURDER = 1;
+        public const int CLUE_ID_CLOSED_BAR = 2;
+        public const int CLUE_ID_MURDER_NOT_DEATH = 3;
 
         public const int LOCATION_ID_HOME = 1;
         public const int LOCATION_ID_CITY_SQUARE = 2;
         public const int LOCATION_ID_NIGHTCLUB = 3;
         public const int LOCATION_ID_INNIGHTCLUB= 4;
+        public const int LOCATION_ID_MUSEUM = 5;
 
         static World()
         {
             PopulateItems();
             PopulateNPCs();
-            PopulateClues();
             PopulateLocations();
+            PopulateClues();
         }
 
         private static void PopulateItems()
         {
             Items.Add(new Item(ITEM_ID_NEWS, "Today's Newspaper", "It features the obituary for Benny Bones"));
+            Items.Add(new Item(ITEM_ID_BEER, "\'Skul\' Brand Beer", "The specialty from \"Bone Dry\""));
         }
 
         private static void PopulateNPCs()
@@ -62,19 +67,25 @@ namespace Engine
 
         private static void PopulateClues()
         {
-            Clue solveMurder = new Clue(CLUE_ID_CLEAR_SOLVE_MURDER, "Why is the bar closed?",
+            // Creating clues
+            Clue closedBar = new Clue(CLUE_ID_CLOSED_BAR, "Why is the bar closed?",
                 "The bouncer seemed on edge, maybe he's hiding the real reason the bar is closed",
-                ItemByID(ITEM_ID_NEWS),
+                ItemByID(ITEM_ID_BEER),
                 NPCDialogueByID(NPCByID(NPC_ID_BOUNCER), 0.3));
+            Clue murderNotDeath = new Clue(CLUE_ID_CLOSED_BAR, "The police seems to believe Benny's death wasn't an accident",
+                "There must be some sign of how Benny died, if I can examine his bones",
+                ItemByID(ITEM_ID_NEWS),
+                LocationDialogueByID(LocationByID(LOCATION_ID_MUSEUM), 0.2));
 
-            Clues.Add(solveMurder);
+            // Adding clues to list
+            Clues.Add(closedBar);
+            Clues.Add(murderNotDeath);
         }
 
         private static void PopulateLocations()
         {
             // Creating locations
             Location home = new Location(LOCATION_ID_HOME, "The Office");
-                home.ClueAvailableHere = ClueByID(CLUE_ID_CLEAR_SOLVE_MURDER);
 
             Location citySquare = new Location(LOCATION_ID_CITY_SQUARE, "City Square");
 
@@ -83,14 +94,20 @@ namespace Engine
 
             Location insideNightClub = new Location(LOCATION_ID_INNIGHTCLUB, "Bone Dry Bar - Interior", true);
 
+            Location museum = new Location(LOCATION_ID_MUSEUM, "Museum - Exterior");
+
             // Linking locations
             home.AdjacentLocations.Add(citySquare);
 
             citySquare.AdjacentLocations.Add(nightclub);
             citySquare.AdjacentLocations.Add(home);
+            citySquare.AdjacentLocations.Add(museum);
 
             nightclub.AdjacentLocations.Add(citySquare);
             nightclub.AdjacentLocations.Add(insideNightClub);
+
+            museum.AdjacentLocations.Add(citySquare);
+
 
             // Adding location dialogue
             home.DialogueTree.Add(new Dialogue("Your place of work, located just outside Skeletown", 0,
@@ -113,10 +130,22 @@ namespace Engine
                 new string[] { "Look at the townspeople", "Look around town" },
                 new double[] { 0.1, 0 }));
 
+            museum.DialogueTree.Add(new Dialogue("The entrance is blocked with police tape, seems like you'll have to wait for the investigation to finish.", 0,
+                new string[] { "Examine the museum's exterior", "Eavesdrop on the police" },
+                new double[] { 0.1, 0.2 }));
+            museum.DialogueTree.Add(new Dialogue("You notice an empty bottle of \"Skul\", a specialty drink at \"Bone Dry\".", 0.1,
+                new string[] { "Eavesdrop on the police", "Enter the museum" },
+                new double[] { 0.2, 0 },
+                ItemByID(ITEM_ID_BEER)));
+            museum.DialogueTree.Add(new Dialogue("\"Y'know, it's a real shame they were killed here. I hate associating this place with a murder.\"", 0.2,
+                new string[] { "Examine the museum's exterior", "Enter the museum" },
+                new double[] { 0.1, 0 }));
+
             // Add the locations to the static list
             Locations.Add(home);
             Locations.Add(citySquare);
             Locations.Add(nightclub);
+            Locations.Add(museum);
         }
 
         public static Item ItemByID(int id)
@@ -169,6 +198,11 @@ namespace Engine
             }
 
             return null;
+        }
+
+        public static Item ItemByDialogue(Dialogue dialogue)
+        {
+            return dialogue.GiveItem;
         }
 
         public static Location LocationByID(int id)

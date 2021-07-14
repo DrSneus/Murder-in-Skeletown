@@ -39,6 +39,16 @@ namespace Engine
             }
         }
 
+        public void checkForItems(Dialogue dialogue)
+        {
+            Item dialogueitem = World.ItemByDialogue(dialogue);
+            if (dialogueitem != null)
+            {
+                Inventory.Add(dialogueitem);
+                dialogue.GiveItem = null;
+            }
+        }
+
         public bool HasThisClue(Clue clue)
         {
             foreach (Clue playerClue in Clues)

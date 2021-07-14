@@ -144,17 +144,13 @@ namespace Skeletown_Game
                     listMenu.Visible = true;
                     menu_ID = DIALOGUE_ID;
 
-                    // Checking for clues
-                    _player.checkForClues(_currentDialogue);
-                    UpdateClueListInUI();
-
-                    return true;
                 }
 
                 // No dialogue exists, meaning end of conversation
                 else
                 {
                     DisplayDialogue(0.0);
+                    return false;
                 }
             }
 
@@ -176,23 +172,27 @@ namespace Skeletown_Game
                     listMenu.ValueMember = "Key";
                     listMenu.Visible = true;
                     menu_ID = DIALOGUE_ID;
-
-                    // Checking for clues
-                    _player.checkForClues(_currentDialogue);
-                    UpdateClueListInUI();
-
-                    return true;
                 }
 
                 // No dialogue exists, meaning end of conversation
                 else
                 {
                     DisplayDialogue(0.0);
+                    return false;
                 }
 
             }
 
-            return false;
+            // If an item exists at this dialogue, add to inventory
+            _player.checkForItems(_currentDialogue);
+
+            // Checking for clues
+            _player.checkForClues(_currentDialogue);
+
+            UpdateClueListInUI();
+            UpdateInventoryListInUI();
+
+            return true;
         }
 
         private void UpdateInventoryListInUI()
@@ -204,7 +204,7 @@ namespace Skeletown_Game
             foreach (Item i in _player.Inventory)
             {
                 dgvInventory.Rows.Add(new[] {
-                    i.Name + ": " + i.Description });
+                    i.Name});
             }
         }
 
