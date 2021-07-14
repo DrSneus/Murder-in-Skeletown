@@ -11,14 +11,36 @@ namespace Engine
         public string[] Responses;
         public double[] ResponseID;
         public Item GiveItem;
+        public Clue GiveClue;
 
-        public Dialogue(string touser, double id, string[] responses, double[] responseID, Item giveitem = null)
+        public Dialogue(string touser, double id, string[] responses, double[] responseID)
+        {
+            ToUserDialogue = touser;
+            ID = id;
+            Responses = responses;
+            ResponseID = responseID;
+            GiveItem = null;
+            GiveClue = null;
+        }
+
+        public Dialogue(string touser, double id, string[] responses, double[] responseID, Item giveitem)
         {
             ToUserDialogue = touser;
             ID = id;
             Responses = responses;
             ResponseID = responseID;
             GiveItem = giveitem;
+            GiveClue = null;
+        }
+
+        public Dialogue(string touser, double id, string[] responses, double[] responseID, Clue giveclue)
+        {
+            ToUserDialogue = touser;
+            ID = id;
+            Responses = responses;
+            ResponseID = responseID;
+            GiveClue = giveclue;
+            GiveItem = null;
         }
 
         public Dictionary<double, string> responseDictionary()

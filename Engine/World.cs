@@ -9,9 +9,9 @@ namespace Engine
     public static class World
     {
         public static readonly List<Item> Items = new List<Item>();
+        public static readonly List<Clue> Clues = new List<Clue>();
         public static readonly List<NPC> NPCs = new List<NPC>();
         public static readonly List<Location> Locations = new List<Location>();
-        public static readonly List<Clue> Clues = new List<Clue>();
 
         public const int ITEM_ID_NEWS = 1;
         public const int ITEM_ID_BEER = 2;
@@ -31,9 +31,9 @@ namespace Engine
         static World()
         {
             PopulateItems();
+            PopulateClues();
             PopulateNPCs();
             PopulateLocations();
-            PopulateClues();
         }
 
         private static void PopulateItems()
@@ -59,7 +59,8 @@ namespace Engine
                new double[] { 99 }));
             bouncer.DialogueTree.Add(new Dialogue("Uhhh..umm..uh nothing. The boss definitely doesn't know anything either!", 0.3,
                new string[] { "Okay?" },
-               new double[] { 99 }));
+               new double[] { 99 },
+               ClueByID(CLUE_ID_CLOSED_BAR)));
 
             // Adding NPCs to List
             NPCs.Add(bouncer);
@@ -70,12 +71,10 @@ namespace Engine
             // Creating clues
             Clue closedBar = new Clue(CLUE_ID_CLOSED_BAR, "Why is the bar closed?",
                 "The bouncer seemed on edge, maybe he's hiding the real reason the bar is closed",
-                ItemByID(ITEM_ID_BEER),
-                NPCDialogueByID(NPCByID(NPC_ID_BOUNCER), 0.3));
-            Clue murderNotDeath = new Clue(CLUE_ID_CLOSED_BAR, "The police seems to believe Benny's death wasn't an accident",
+                ItemByID(ITEM_ID_BEER));
+            Clue murderNotDeath = new Clue(CLUE_ID_MURDER_NOT_DEATH, "The police seems to believe Benny's death wasn't an accident",
                 "There must be some sign of how Benny died, if I can examine his bones",
-                ItemByID(ITEM_ID_NEWS),
-                LocationDialogueByID(LocationByID(LOCATION_ID_MUSEUM), 0.2));
+                ItemByID(ITEM_ID_NEWS));
 
             // Adding clues to list
             Clues.Add(closedBar);
@@ -139,7 +138,8 @@ namespace Engine
                 ItemByID(ITEM_ID_BEER)));
             museum.DialogueTree.Add(new Dialogue("\"Y'know, it's a real shame they were killed here. I hate associating this place with a murder.\"", 0.2,
                 new string[] { "Examine the museum's exterior", "Enter the museum" },
-                new double[] { 0.1, 0 }));
+                new double[] { 0.1, 0 },
+                ClueByID(CLUE_ID_MURDER_NOT_DEATH)));
 
             // Add the locations to the static list
             Locations.Add(home);
@@ -187,24 +187,6 @@ namespace Engine
             return null;
         }
 
-        public static Clue ClueByDialogue(Dialogue dialogue)
-        {
-            foreach (Clue clue in Clues)
-            {
-                if (clue.ClueFlag == dialogue)
-                {
-                    return clue;
-                }
-            }
-
-            return null;
-        }
-
-        public static Item ItemByDialogue(Dialogue dialogue)
-        {
-            return dialogue.GiveItem;
-        }
-
         public static Location LocationByID(int id)
         {
             foreach (Location location in Locations)
@@ -216,6 +198,16 @@ namespace Engine
             }
 
             return null;
+        }
+
+        public static Clue ClueByDialogue(Dialogue dialogue)
+        {
+            return dialogue.GiveClue;
+        }
+
+        public static Item ItemByDialogue(Dialogue dialogue)
+        {
+            return dialogue.GiveItem;
         }
 
         public static Dialogue NPCDialogueByID(NPC npc, double dialogueID)

@@ -22,20 +22,11 @@ namespace Engine
 
         public void checkForClues(Dialogue dialogue)
         {
-            foreach (Clue clue in World.Clues)
+            Clue dialogueclue = World.ClueByDialogue(dialogue);
+            if (dialogueclue != null)
             {
-                if (clue.ClueFlag == dialogue)
-                {
-                    if (!HasThisClue(clue))
-                    {
-                        Clues.Add(clue);
-                    }
-                    else
-                    {
-                        return;
-                    }
-
-                }
+                Clues.Add(dialogueclue);
+                dialogue.GiveClue = null;
             }
         }
 
