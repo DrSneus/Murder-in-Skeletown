@@ -16,8 +16,7 @@ namespace Skeletown_Game
         private Player _player;
         private NPC _currentNPC;
         private Dialogue _currentDialogue;
-        private const int LOOK_ID = 1;
-        private const int TALK_ID = 2;
+        private const int DIALOGUE_ID = 1;
         private const int MOVE_ID = 3;
         private int menu_ID = 0;
 
@@ -38,45 +37,23 @@ namespace Skeletown_Game
                 MoveTo((Location)listMenu.SelectedItem);
             }
 
-            // Talking menu
-            else if (menu_ID == TALK_ID)
+            // Dialogue menu: Either talking or inspecting environment
+            else if (menu_ID == DIALOGUE_ID)
             {
                 bool dialogueCheck = DisplayDialogue(Convert.ToDouble(listMenu.SelectedValue.ToString()));
                 
                 // End of dialogue reached
                 if (!dialogueCheck)
                 {
-                    menu_ID = 0;
-                    listMenu.DataSource = null;
+                    DisplayDialogue(0);
                 }
             }
         }
 
-        private void btnLook_Click(object sender, EventArgs e)
+        private void btnDialogue_Click(object sender, EventArgs e)
         {
-            menu_ID = LOOK_ID;
-            rtbMessages.Text = _player.CurrentLocation.Description;
-            listMenu.DataSource = null;
-        }
-
-        private void btnTalk_Click(object sender, EventArgs e)
-        {
-            menu_ID = 0;
-            // If an NPC exists here
-            if (_currentNPC != null)
-            {
-                menu_ID = TALK_ID;
-
-                // NPC Dialogue
-                DisplayDialogue(0.0);
-            }
-
-            // Default message for no NPC
-            else
-            {
-                rtbMessages.Text = "There's no one to talk to...";
-                listMenu.DataSource = null;
-            }
+            menu_ID = DIALOGUE_ID;
+            DisplayDialogue(0);
         }
 
         private void btnMove_Click(object sender, EventArgs e)
@@ -105,10 +82,6 @@ namespace Skeletown_Game
 
             // Update the player's current location
             _player.CurrentLocation = newLocation;
-            
-            // Clear text
-            rtbMessages.Text = "";
-            listMenu.DataSource = null;
 
             // Display current location name and description
             lblLocation.Text = newLocation.Name;
@@ -116,7 +89,10 @@ namespace Skeletown_Game
             // Does the location have a NPC?
             _currentNPC = newLocation.NPCHere;
             SetUpNPC(_currentNPC);
+            SwapDialogueButton();
 
+            // Set up dialogue
+            DisplayDialogue(0);
 
             // Refresh player's inventory list
             UpdateInventoryListInUI();
@@ -132,9 +108,6 @@ namespace Skeletown_Game
                 pbNPC.Image = (Image)Properties.Resources.ResourceManager.GetObject(_currentNPC.Name, Properties.Resources.Culture);
                 rtbMessages.Location = new Point(118, 512);
                 rtbMessages.Size = new Size(608, 101);
-
-                btnLook.Visible = false;
-                btnTalk.Visible = true;
             }
 
             // No NPC
@@ -143,8 +116,6 @@ namespace Skeletown_Game
                 pbNPC.Visible = false;
                 rtbMessages.Location = new Point(12, 512);
                 rtbMessages.Size = new Size(714, 101);
-                btnLook.Visible = true;
-                btnTalk.Visible = false;
             }
 
         }
@@ -153,27 +124,63 @@ namespace Skeletown_Game
         {
             menu_ID = 0;
 
+            // NPC here, so initiate dialogue with them
             if (_currentNPC != null)
             {
                 // Changing the dialogue in response to previous dialogue
                 // Finding dialogue
-                _currentDialogue = World.DialogueByID(_currentNPC, responseID);
+                _currentDialogue = World.NPCDialogueByID(_currentNPC, responseID);
 
                 // Dialogue exists
                 if (_currentDialogue != null)
                 {
-                    rtbMessages.Text = _currentDialogue.NPCDialogue;
+                    rtbMessages.Text = _currentDialogue.ToUserDialogue;
 
                     // Giving user dialogue responses
                     listMenu.DataSource = new BindingSource(_currentDialogue.responseDictionary(), null);
                     listMenu.DisplayMember = "Value";
                     listMenu.ValueMember = "Key";
                     listMenu.Visible = true;
-                    menu_ID = TALK_ID;
+                    menu_ID = DIALOGUE_ID;
 
                     // Checking for clues
                     _player.checkForClues(_currentDialogue);
                     UpdateClueListInUI();
+
+                    return true;
+                }
+
+                // No dialogue exists, meaning end of conversation
+                else
+                {
+                    DisplayDialogue(0.0);
+                }
+            }
+
+            // No NPC, use Location dialogue instead
+            else
+            {
+                // Changing the dialogue in response to previous dialogue
+                // Finding dialogue
+                _currentDialogue = World.LocationDialogueByID(_player.CurrentLocation, responseID);
+
+                // Dialogue exists
+                if (_currentDialogue != null)
+                {
+                    rtbMessages.Text = _currentDialogue.ToUserDialogue;
+
+                    // Giving user dialogue responses
+                    listMenu.DataSource = new BindingSource(_currentDialogue.responseDictionary(), null);
+                    listMenu.DisplayMember = "Value";
+                    listMenu.ValueMember = "Key";
+                    listMenu.Visible = true;
+                    menu_ID = DIALOGUE_ID;
+
+                    // Checking for clues
+                    _player.checkForClues(_currentDialogue);
+                    UpdateClueListInUI();
+
+                    return true;
                 }
 
                 // No dialogue exists, meaning end of conversation
@@ -182,11 +189,9 @@ namespace Skeletown_Game
                     DisplayDialogue(0.0);
                 }
 
-                return true;
             }
 
             return false;
-
         }
 
         private void UpdateInventoryListInUI()
@@ -212,6 +217,16 @@ namespace Skeletown_Game
             {
                 dgvClues.Rows.Add(new[] {
                     pClue.Name});
+            }
+        }
+
+        private void SwapDialogueButton()
+        {
+            btnDialogue.Text = "Look";
+
+            if(_currentNPC != null)
+            {
+                btnDialogue.Text = "Talk";
             }
         }
     }

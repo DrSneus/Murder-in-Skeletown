@@ -38,22 +38,25 @@ namespace Engine
 
         private static void PopulateNPCs()
         {
-            // Bouncer NPC
-            List<Dialogue> BOUNCER_TREE = new List<Dialogue>();
-            BOUNCER_TREE.Add(new Dialogue("Sorry, no one in today unless you're invited.", 0,
+            // Creating NPCS
+            NPC bouncer = new NPC(NPC_ID_BOUNCER, "Bouncer");
+
+            // Creating NPC Dialogue Trees
+            bouncer.DialogueTree.Add(new Dialogue("Sorry, no one in today unless you're invited.", 0,
                 new string[] { "What's the occasion?", "Let me in. Now", "What do you know about Benny Bones' death?" },
                 new double[] { 0.1, 0.2, 0.3 }));
-            BOUNCER_TREE.Add(new Dialogue("Boss's birthday, invite only.", 0.1,
+            bouncer.DialogueTree.Add(new Dialogue("Boss's birthday, invite only.", 0.1,
                new string[] { "I see, thanks."},
                new double[] { 99 }));
-            BOUNCER_TREE.Add(new Dialogue("Ha, thanks for making me laugh", 0.2,
+            bouncer.DialogueTree.Add(new Dialogue("Ha, thanks for making me laugh", 0.2,
                new string[] { "Fine, I'm leaving" },
                new double[] { 99 }));
-            BOUNCER_TREE.Add(new Dialogue("Uhhh..umm..uh nothing. The boss definitely doesn't know anything either!", 0.3,
+            bouncer.DialogueTree.Add(new Dialogue("Uhhh..umm..uh nothing. The boss definitely doesn't know anything either!", 0.3,
                new string[] { "Okay?" },
                new double[] { 99 }));
 
-            NPCs.Add(new NPC(NPC_ID_BOUNCER, "Bouncer", BOUNCER_TREE));
+            // Adding NPCs to List
+            NPCs.Add(bouncer);
         }
 
         private static void PopulateClues()
@@ -61,7 +64,7 @@ namespace Engine
             Clue solveMurder = new Clue(CLUE_ID_CLEAR_SOLVE_MURDER, "Why is the bar closed?",
                 "The bouncer seemed on edge, maybe he's hiding the real reason the bar is closed",
                 ItemByID(ITEM_ID_NEWS),
-                DialogueByID(NPCByID(NPC_ID_BOUNCER), 0.3));
+                NPCDialogueByID(NPCByID(NPC_ID_BOUNCER), 0.3));
 
             Clues.Add(solveMurder);
         }
@@ -69,16 +72,12 @@ namespace Engine
         private static void PopulateLocations()
         {
             // Creating locations
-            Location home = new Location(LOCATION_ID_HOME, "The Office",
-                "Your place of work, located just outside Skeletown");
+            Location home = new Location(LOCATION_ID_HOME, "The Office");
+                home.ClueAvailableHere = ClueByID(CLUE_ID_CLEAR_SOLVE_MURDER);
 
-            home.ClueAvailableHere = ClueByID(CLUE_ID_CLEAR_SOLVE_MURDER);
+            Location citySquare = new Location(LOCATION_ID_CITY_SQUARE, "City Square");
 
-            Location citySquare = new Location(LOCATION_ID_CITY_SQUARE,
-                "City Square", "Skeletons are walking around the city.");
-
-            Location nightclub = new Location(LOCATION_ID_NIGHTCLUB,
-                "Bone Dry Bar", "A nightclub popular with young skeletons");
+            Location nightclub = new Location(LOCATION_ID_NIGHTCLUB, "Bone Dry Bar");
                 nightclub.NPCHere = NPCByID(NPC_ID_BOUNCER);
 
             // Linking locations
@@ -88,6 +87,27 @@ namespace Engine
             citySquare.AdjacentLocations.Add(home);
 
             nightclub.AdjacentLocations.Add(citySquare);
+
+            // Adding location dialogue
+            home.DialogueTree.Add(new Dialogue("Your place of work, located just outside Skeletown", 0,
+                new string[] { "Review the clues", "Water the office plant" },
+                new double[] { 0.1, 0.2 }));
+            home.DialogueTree.Add(new Dialogue("Benny Bones was found with his skull cracked outside the museum \"The Bones of History\"", 0.1,
+                new string[] { "Water the office plant", "Look around the office" },
+                new double[] { 0.2, 0 }));
+            home.DialogueTree.Add(new Dialogue("He's looking alive and healthy, unlike Benny.", 0.2,
+                new string[] { "Review the clues", "Look around the office" },
+                new double[] { 0.1, 0 }));
+
+            citySquare.DialogueTree.Add(new Dialogue("Skeletons are walking around the city's downtown. Nearby is the town museum, and the bar \"Bone Dry\"", 0,
+                new string[] { "Look at the townspeople", "Take a smoke break" },
+                new double[] { 0.1, 0.2 }));
+            citySquare.DialogueTree.Add(new Dialogue("The skeletons around town seem to disregard your presence.", 0.1,
+                new string[] { "Take a smoke break", "Look around town" },
+                new double[] { 0.2, 0 }));
+            citySquare.DialogueTree.Add(new Dialogue("You look for a cigarette, before you remember that you don't smoke, as you lack lungs.", 0.2,
+                new string[] { "Look at the townspeople", "Look around town" },
+                new double[] { 0.1, 0 }));
 
             // Add the locations to the static list
             Locations.Add(home);
@@ -160,9 +180,22 @@ namespace Engine
             return null;
         }
 
-        public static Dialogue DialogueByID(NPC npc, double dialogueID)
+        public static Dialogue NPCDialogueByID(NPC npc, double dialogueID)
         {
             foreach (Dialogue dialogue in npc.DialogueTree)
+            {
+                if (dialogue.ID == dialogueID)
+                {
+                    return dialogue;
+                }
+            }
+
+            return null;
+        }
+
+        public static Dialogue LocationDialogueByID(Location location, double dialogueID)
+        {
+            foreach (Dialogue dialogue in location.DialogueTree)
             {
                 if (dialogue.ID == dialogueID)
                 {

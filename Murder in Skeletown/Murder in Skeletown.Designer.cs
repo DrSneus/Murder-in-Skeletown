@@ -30,9 +30,8 @@ namespace Skeletown_Game
         private void InitializeComponent()
         {
             this.listMenu = new System.Windows.Forms.ListBox();
-            this.btnLook = new System.Windows.Forms.Button();
             this.btnMove = new System.Windows.Forms.Button();
-            this.btnTalk = new System.Windows.Forms.Button();
+            this.btnDialogue = new System.Windows.Forms.Button();
             this.rtbMessages = new System.Windows.Forms.RichTextBox();
             this.pbMain = new System.Windows.Forms.PictureBox();
             this.lblLocation = new System.Windows.Forms.Label();
@@ -60,18 +59,6 @@ namespace Skeletown_Game
             this.listMenu.TabIndex = 25;
             this.listMenu.SelectedIndexChanged += new System.EventHandler(this.listMenu_SelectedIndexChanged);
             // 
-            // btnLook
-            // 
-            this.btnLook.BackColor = System.Drawing.Color.Gainsboro;
-            this.btnLook.Font = new System.Drawing.Font("NSimSun", 16F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.btnLook.Location = new System.Drawing.Point(791, 577);
-            this.btnLook.Name = "btnLook";
-            this.btnLook.Size = new System.Drawing.Size(454, 141);
-            this.btnLook.TabIndex = 24;
-            this.btnLook.Text = "Look";
-            this.btnLook.UseVisualStyleBackColor = false;
-            this.btnLook.Click += new System.EventHandler(this.btnLook_Click);
-            // 
             // btnMove
             // 
             this.btnMove.BackColor = System.Drawing.Color.Gainsboro;
@@ -84,17 +71,17 @@ namespace Skeletown_Game
             this.btnMove.UseVisualStyleBackColor = false;
             this.btnMove.Click += new System.EventHandler(this.btnMove_Click);
             // 
-            // btnTalk
+            // btnDialogue
             // 
-            this.btnTalk.BackColor = System.Drawing.SystemColors.ControlLight;
-            this.btnTalk.Font = new System.Drawing.Font("NSimSun", 16F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.btnTalk.Location = new System.Drawing.Point(791, 577);
-            this.btnTalk.Name = "btnTalk";
-            this.btnTalk.Size = new System.Drawing.Size(454, 141);
-            this.btnTalk.TabIndex = 21;
-            this.btnTalk.Text = "Talk";
-            this.btnTalk.UseVisualStyleBackColor = false;
-            this.btnTalk.Click += new System.EventHandler(this.btnTalk_Click);
+            this.btnDialogue.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.btnDialogue.Font = new System.Drawing.Font("NSimSun", 16F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.btnDialogue.Location = new System.Drawing.Point(791, 577);
+            this.btnDialogue.Name = "btnDialogue";
+            this.btnDialogue.Size = new System.Drawing.Size(454, 141);
+            this.btnDialogue.TabIndex = 21;
+            this.btnDialogue.Text = "Look";
+            this.btnDialogue.UseVisualStyleBackColor = false;
+            this.btnDialogue.Click += new System.EventHandler(this.btnDialogue_Click);
             // 
             // rtbMessages
             // 
@@ -230,8 +217,7 @@ namespace Skeletown_Game
             this.Controls.Add(this.pbNPC);
             this.Controls.Add(this.dgvInventory);
             this.Controls.Add(this.btnMove);
-            this.Controls.Add(this.btnLook);
-            this.Controls.Add(this.btnTalk);
+            this.Controls.Add(this.btnDialogue);
             this.Controls.Add(this.rtbMessages);
             this.Controls.Add(this.pbMain);
             this.Controls.Add(this.listMenu);
@@ -249,9 +235,8 @@ namespace Skeletown_Game
         #endregion
 
         private System.Windows.Forms.ListBox listMenu;
-        private System.Windows.Forms.Button btnLook;
         private System.Windows.Forms.Button btnMove;
-        private System.Windows.Forms.Button btnTalk;
+        private System.Windows.Forms.Button btnDialogue;
         private System.Windows.Forms.RichTextBox rtbMessages;
         private System.Windows.Forms.PictureBox pbMain;
         private System.Windows.Forms.Label lblLocation;

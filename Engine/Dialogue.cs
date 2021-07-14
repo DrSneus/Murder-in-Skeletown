@@ -6,14 +6,14 @@ namespace Engine
 {
     public class Dialogue
     {
-        public string NPCDialogue;
+        public string ToUserDialogue;
         public double ID;
         public string[] Responses;
         public double[] ResponseID;
 
-        public Dialogue(string npcdialogue, double id, string[] responses, double[] responseID)
+        public Dialogue(string touser, double id, string[] responses, double[] responseID)
         {
-            NPCDialogue = npcdialogue;
+            ToUserDialogue = touser;
             ID = id;
             Responses = responses;
             ResponseID = responseID;

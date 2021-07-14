@@ -8,24 +8,24 @@ namespace Engine
     {
         public int ID { get; set; }
         public string Name { get; set; }
-        public string Description { get; set; }
         public bool IsLocked { get; set; }
         public Clue ClueAvailableHere { get; set; }
         public NPC NPCHere { get; set; }
         public List<Location> AdjacentLocations { get; set; }
+        public List<Dialogue> DialogueTree { get; set; }
 
-        public Location(int id, string name, string description,
+        public Location(int id, string name,
             bool isLocked = false,
             Clue clueAvailableHere = null,
             NPC npcHere = null)
         {
             ID = id;
             Name = name;
-            Description = description;
             IsLocked = isLocked;
             ClueAvailableHere = clueAvailableHere;
             NPCHere = npcHere;
             AdjacentLocations = new List<Location>();
+            DialogueTree = new List<Dialogue>();
         }
     }
 }
