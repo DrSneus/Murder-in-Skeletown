@@ -9,16 +9,12 @@ namespace Engine
         public int ID { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
-        public Item RewardItem { get; set; }
-        public Item CompletionItem { get; set; }
 
-        public Clue(int id, string name, string description, Item completionitem, Item rewardItem = null)
+        public Clue(int id, string name, string description)
         {
             ID = id;
             Name = name;
             Description = description;
-            CompletionItem = completionitem;
-            RewardItem = rewardItem;
         }
     }
 }

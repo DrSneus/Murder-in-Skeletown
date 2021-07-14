@@ -13,6 +13,7 @@ namespace Engine
         public NPC NPCHere { get; set; }
         public List<Location> AdjacentLocations { get; set; }
         public List<Dialogue> DialogueTree { get; set; }
+        public DialogueFlag Flag { get; set; }
 
         public Location(int id, string name,
             bool isLocked = false,
@@ -26,6 +27,7 @@ namespace Engine
             NPCHere = npcHere;
             AdjacentLocations = new List<Location>();
             DialogueTree = new List<Dialogue>();
+            Flag = null;
         }
     }
 }

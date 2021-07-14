@@ -52,5 +52,12 @@ namespace Engine
             }
             return responseDict;
         }
+
+        public void AddNewResponse(string newresponses, double newresponseid)
+        {
+            Responses = new List<string>(Responses) { newresponses }.ToArray();
+            ResponseID = new List<double>(ResponseID) { newresponseid }.ToArray();
+        }
+        
     }
 }

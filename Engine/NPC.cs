@@ -9,11 +9,14 @@ namespace Engine
         public int ID { get; set; }
         public string Name { get; set; }
         public List<Dialogue> DialogueTree { get; set; }
+        public DialogueFlag Flag { get; set; }
+
         public NPC(int id, string name)
         {
             ID = id;
             Name = name;
             DialogueTree = new List<Dialogue>();
+            Flag = null;
         }
     }
 }

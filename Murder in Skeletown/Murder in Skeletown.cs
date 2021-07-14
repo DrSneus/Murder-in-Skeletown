@@ -128,60 +128,59 @@ namespace Skeletown_Game
             // NPC here, so initiate dialogue with them
             if (_currentNPC != null)
             {
-                // Changing the dialogue in response to previous dialogue
                 // Finding dialogue
                 _currentDialogue = World.NPCDialogueByID(_currentNPC, responseID);
-
-                // Dialogue exists
-                if (_currentDialogue != null)
-                {
-                    rtbMessages.Text = _currentDialogue.ToUserDialogue;
-
-                    // Giving user dialogue responses
-                    listMenu.DataSource = new BindingSource(_currentDialogue.responseDictionary(), null);
-                    listMenu.DisplayMember = "Value";
-                    listMenu.ValueMember = "Key";
-                    listMenu.Visible = true;
-                    menu_ID = DIALOGUE_ID;
-
-                }
-
-                // No dialogue exists, meaning end of conversation
-                else
-                {
-                    DisplayDialogue(0.0);
-                    return false;
-                }
             }
 
-            // No NPC, use Location dialogue instead
+            // No NPC, use location dialogue instead
             else
             {
-                // Changing the dialogue in response to previous dialogue
                 // Finding dialogue
                 _currentDialogue = World.LocationDialogueByID(_player.CurrentLocation, responseID);
-
-                // Dialogue exists
-                if (_currentDialogue != null)
-                {
-                    rtbMessages.Text = _currentDialogue.ToUserDialogue;
-
-                    // Giving user dialogue responses
-                    listMenu.DataSource = new BindingSource(_currentDialogue.responseDictionary(), null);
-                    listMenu.DisplayMember = "Value";
-                    listMenu.ValueMember = "Key";
-                    listMenu.Visible = true;
-                    menu_ID = DIALOGUE_ID;
-                }
-
-                // No dialogue exists, meaning end of conversation
-                else
-                {
-                    DisplayDialogue(0.0);
-                    return false;
-                }
-
             }
+
+            // No dialogue exists, so end conversation
+            if (_currentDialogue == null)
+            {
+                DisplayDialogue(0.0);
+                return false;
+            }
+
+            // Dialogue exists
+            rtbMessages.Text = _currentDialogue.ToUserDialogue;
+
+            // Search for any dialogue updates
+            if (_currentNPC != null && _currentNPC.Flag != null)
+            {
+                if (_player.IsFlagCompleted(_currentNPC.Flag))
+                {
+                    Dialogue AddDialogue = World.NPCDialogueByID(_currentNPC, _currentNPC.Flag.NewDialoguePath);
+                    AddDialogue.AddNewResponse(_currentNPC.Flag.NewResponse, _currentNPC.Flag.NewDialogue.ID);
+
+                    _currentNPC.DialogueTree.Add(_currentNPC.Flag.NewDialogue);
+
+                    _currentNPC.Flag = null;
+                }
+            }
+
+            else if (_player.CurrentLocation.Flag != null){
+                if (_player.IsFlagCompleted(_player.CurrentLocation.Flag))
+                {
+                    Dialogue AddDialogue = World.LocationDialogueByID(_player.CurrentLocation, _player.CurrentLocation.Flag.NewDialoguePath);
+                    AddDialogue.AddNewResponse(_player.CurrentLocation.Flag.NewResponse, _player.CurrentLocation.Flag.NewDialogue.ID);
+
+                    _player.CurrentLocation.DialogueTree.Add(_player.CurrentLocation.Flag.NewDialogue);
+
+                    _player.CurrentLocation.Flag = null;
+                }
+            }
+
+            // Giving user dialogue responses
+            listMenu.DataSource = new BindingSource(_currentDialogue.responseDictionary(), null);
+            listMenu.DisplayMember = "Value";
+            listMenu.ValueMember = "Key";
+            listMenu.Visible = true;
+            menu_ID = DIALOGUE_ID;
 
             // If an item exists at this dialogue, add to inventory
             _player.checkForItems(_currentDialogue);

@@ -40,47 +40,13 @@ namespace Engine
             }
         }
 
-        public bool HasThisClue(Clue clue)
+        public bool IsFlagCompleted(DialogueFlag flag)
         {
-            foreach (Clue playerClue in Clues)
-            {
-                if (playerClue.ID == clue.ID)
-                {
-                    return true;
-                }
+            if (Inventory.Contains(flag.ItemReq) && Clues.Contains(flag.ClueReq)) {
+                return true;
             }
+
             return false;
-        }
-
-        public bool HasAllClueCompletionItems(Clue clue)
-        {
-            // See if the player has the item to solve the clue
-            bool playerHasItem = false;
-
-            // Search for items in the player's inventory
-            foreach (Item i in Inventory)
-            {
-                // The player has the item in their inventory
-                if (i.ID == clue.CompletionItem.ID)
-                {
-                    playerHasItem = true;
-                    break;
-                }
-            }
-
-            return playerHasItem;
-        }
-
-        public void RemoveClueCompletionItems(Clue clue)
-        {
-            foreach (Item i in Inventory)
-            {
-                if (i.ID == clue.CompletionItem.ID)
-                {
-                    Inventory.Remove(i);
-                    break;
-                }
-            }
         }
 
         public void AddItemToInventory(Item itemToAdd)

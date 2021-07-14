@@ -47,7 +47,9 @@ namespace Engine
             // Creating NPCS
             NPC bouncer = new NPC(NPC_ID_BOUNCER, "Bouncer");
 
-            // Creating NPC Dialogue Trees
+            // Creating Dialogue, and adding flags for additional dialogues
+
+            // Bouncer NPC
             bouncer.DialogueTree.Add(new Dialogue("Sorry, no one in today unless you're invited.", 0,
                 new string[] { "What's the occasion?", "Let me in. Now", "What do you know about Benny Bones' death?" },
                 new double[] { 0.1, 0.2, 0.3 }));
@@ -62,6 +64,12 @@ namespace Engine
                new double[] { 99 },
                ClueByID(CLUE_ID_CLOSED_BAR)));
 
+            bouncer.Flag = new DialogueFlag(ClueByID(CLUE_ID_CLOSED_BAR), ItemByID(ITEM_ID_BEER), 0.3,
+                "I found this beer at the crime scene, should I let the police know?",
+                new Dialogue("Ok ok, you can see the boss. Just don't tell him I let you in.", 0.4,
+                new string[] { "Thanks." },
+                new double[] { 99 }));
+
             // Adding NPCs to List
             NPCs.Add(bouncer);
         }
@@ -70,11 +78,9 @@ namespace Engine
         {
             // Creating clues
             Clue closedBar = new Clue(CLUE_ID_CLOSED_BAR, "Why is the bar closed?",
-                "The bouncer seemed on edge, maybe he's hiding the real reason the bar is closed",
-                ItemByID(ITEM_ID_BEER));
+                "The bouncer seemed on edge, maybe he's hiding the real reason the bar is closed");
             Clue murderNotDeath = new Clue(CLUE_ID_MURDER_NOT_DEATH, "The police seems to believe Benny's death wasn't an accident",
-                "There must be some sign of how Benny died, if I can examine his bones",
-                ItemByID(ITEM_ID_NEWS));
+                "There must be some sign of how Benny died, if I can examine his bones");
 
             // Adding clues to list
             Clues.Add(closedBar);
@@ -235,5 +241,6 @@ namespace Engine
 
             return null;
         }
+
     }
 }
