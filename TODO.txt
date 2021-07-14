@@ -1,9 +1,6 @@
 TO DO:
 - NPCs
 	- Art (pixel?)
-- Quests
-	- Better quest addition in log
-	- Quest hints from dialogue
 - UI
 	- Nicer quest log (tooltip descriptions)
 	- Nicer inventory screen
@@ -18,6 +15,9 @@ DONE:
 	- Travel option (dropdown menu to select location?)
 	- Full dialogue engine
 	- Look around option
+- Clues
+	- Are now given in response to certain dialogue prompts
+	- Can be solved with key items to unlock areas/dialogue	
 - Item Menu
 	- Description section
 - Art
