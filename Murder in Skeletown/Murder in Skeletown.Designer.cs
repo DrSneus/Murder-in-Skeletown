@@ -109,10 +109,10 @@ namespace Skeletown_Game
             // 
             this.lblLocation.AutoSize = true;
             this.lblLocation.BackColor = System.Drawing.SystemColors.Control;
-            this.lblLocation.Font = new System.Drawing.Font("Courier New", 26F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.lblLocation.Font = new System.Drawing.Font("Courier New", 24F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this.lblLocation.Location = new System.Drawing.Point(21, 97);
             this.lblLocation.Name = "lblLocation";
-            this.lblLocation.Size = new System.Drawing.Size(397, 59);
+            this.lblLocation.Size = new System.Drawing.Size(371, 54);
             this.lblLocation.TabIndex = 26;
             this.lblLocation.Text = "LocationText";
             this.lblLocation.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;

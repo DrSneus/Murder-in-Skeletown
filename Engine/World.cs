@@ -22,6 +22,7 @@ namespace Engine
         public const int LOCATION_ID_HOME = 1;
         public const int LOCATION_ID_CITY_SQUARE = 2;
         public const int LOCATION_ID_NIGHTCLUB = 3;
+        public const int LOCATION_ID_INNIGHTCLUB= 4;
 
         static World()
         {
@@ -77,8 +78,10 @@ namespace Engine
 
             Location citySquare = new Location(LOCATION_ID_CITY_SQUARE, "City Square");
 
-            Location nightclub = new Location(LOCATION_ID_NIGHTCLUB, "Bone Dry Bar");
+            Location nightclub = new Location(LOCATION_ID_NIGHTCLUB, "Bone Dry Bar - Exterior");
                 nightclub.NPCHere = NPCByID(NPC_ID_BOUNCER);
+
+            Location insideNightClub = new Location(LOCATION_ID_INNIGHTCLUB, "Bone Dry Bar - Interior", true);
 
             // Linking locations
             home.AdjacentLocations.Add(citySquare);
@@ -87,6 +90,7 @@ namespace Engine
             citySquare.AdjacentLocations.Add(home);
 
             nightclub.AdjacentLocations.Add(citySquare);
+            nightclub.AdjacentLocations.Add(insideNightClub);
 
             // Adding location dialogue
             home.DialogueTree.Add(new Dialogue("Your place of work, located just outside Skeletown", 0,

@@ -17,7 +17,7 @@ namespace Skeletown_Game
         private NPC _currentNPC;
         private Dialogue _currentDialogue;
         private const int DIALOGUE_ID = 1;
-        private const int MOVE_ID = 3;
+        private const int MOVE_ID = 2;
         private int menu_ID = 0;
 
         public Skeletown_Game()
@@ -60,7 +60,7 @@ namespace Skeletown_Game
         {
             menu_ID = 0;
             // Adding possible locations, and new locations
-            List<Location> moveOptions = _player.VisitedLocations.Union(_player.CurrentLocation.AdjacentLocations).ToList();
+            List<Location> moveOptions = _player.CurrentLocation.AdjacentLocations.ToList();
             moveOptions.Remove(_player.CurrentLocation);
 
             // Changing the menu to be based on moveOptions
@@ -74,6 +74,7 @@ namespace Skeletown_Game
             // Is the area available to enter?
             if (newLocation.IsLocked)
             {
+                menu_ID = MOVE_ID;
                 return;
             }
 
@@ -229,5 +230,6 @@ namespace Skeletown_Game
                 btnDialogue.Text = "Talk";
             }
         }
+
     }
 }
