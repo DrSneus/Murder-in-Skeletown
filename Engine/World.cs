@@ -21,6 +21,7 @@ namespace Engine
         public const int CLUE_ID_SOLVE_MURDER = 1;
         public const int CLUE_ID_CLOSED_BAR = 2;
         public const int CLUE_ID_MURDER_NOT_DEATH = 3;
+        public const int CLUE_ID_SUS_GIFT = 4;
 
         public const int LOCATION_ID_HOME = 1;
         public const int LOCATION_ID_CITY_SQUARE = 2;
@@ -79,12 +80,15 @@ namespace Engine
             // Creating clues
             Clue closedBar = new Clue(CLUE_ID_CLOSED_BAR, "Why is the bar closed?",
                 "The bouncer seemed on edge, maybe he's hiding the real reason the bar is closed");
-            Clue murderNotDeath = new Clue(CLUE_ID_MURDER_NOT_DEATH, "The police seems to believe Benny's death wasn't an accident",
+            Clue murderNotDeath = new Clue(CLUE_ID_MURDER_NOT_DEATH, "Was Benny murdered?",
                 "There must be some sign of how Benny died, if I can examine his bones");
+            Clue susGift = new Clue(CLUE_ID_SUS_GIFT, "What was CaBone's gift?",
+                "CaBone mentioned that he received something yesterday that he was anticipating");
 
             // Adding clues to list
             Clues.Add(closedBar);
             Clues.Add(murderNotDeath);
+            Clues.Add(susGift);
         }
 
         private static void PopulateLocations()
@@ -149,9 +153,22 @@ namespace Engine
                 new double[] { 0.1, 0 },
                 ClueByID(CLUE_ID_MURDER_NOT_DEATH)));
 
-            insideNightClub.DialogueTree.Add(new Dialogue("Dozens of skeletons in suits are crowded around the bar, none of them pay any attention to you.", 0,
-                new string[] { "Examine the museum's exterior", "Eavesdrop on the police" },
+            insideNightClub.DialogueTree.Add(new Dialogue("Dozens of skeletons in suits are crowded around the bar. On stage, you see CaBone, the boss of the local mafia, preparing a speech", 0,
+                new string[] { "Listen to the speech", "Observe the crowd's faces" },
                 new double[] { 0.1, 0.2 }));
+            insideNightClub.DialogueTree.Add(new Dialogue("\"My friends! I am delighted to have you join me here for my birthday this evening.\"", 0.1,
+                new string[] { "Continue listening", "Observe the crowd's faces" },
+                new double[] { 0.11, 0.2 }));
+            insideNightClub.DialogueTree.Add(new Dialogue("\"Although I must confess, I already received my most anticipated gift yesterday at work...\"", 0.11,
+                new string[] { "Continue listening", "Observe the crowd's faces" },
+                new double[] { 0.111, 0.2 }));
+            insideNightClub.DialogueTree.Add(new Dialogue("\"But this is a time of joy, so enough work talk! Let's party!\"", 0.111,
+                new string[] { "Look around", "Observe the crowd's faces" },
+                new double[] { 00, 0.2 }, 
+                ClueByID(CLUE_ID_SUS_GIFT)));
+            insideNightClub.DialogueTree.Add(new Dialogue("The crowd sounds joyful, but it's hard to read the facial expressions on skulls", 0.2,
+                new string[] { "Look around", "Listen to the speaker" },
+                new double[] { 0, 0.1 }));
 
 
             // Add the locations to the static list
