@@ -2,10 +2,7 @@ TO DO:
 - NPCs
 	- Art (pixel?)
 - UI
-	- Nicer quest log (tooltip descriptions)
-	- Nicer inventory screen
 	- Better background color
-	- Better screen layout
 - Plot
 	- More NPCs and areas
 	- Story
@@ -22,3 +19,6 @@ DONE:
 	- Description section
 - Art
 	- Began pixel art for NPCs
+- UI
+	- Possible final layout established
+	- Displays descriptions for clues and items, and updates automatically
