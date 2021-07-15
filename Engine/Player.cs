@@ -50,7 +50,12 @@ namespace Engine
 
         public bool IsFlagCompleted(DialogueFlag flag)
         {
-            if (Inventory.Contains(flag.ItemReq) && Clues.Contains(flag.ClueReq)) {
+            if (flag == null)
+            {
+                return false;
+            }
+
+            if (Inventory.Contains(flag.ItemReq) && Clues.Contains(flag.ClueReq) && flag.NewDialoguePath != 0) {
                 return true;
             }
 

@@ -16,6 +16,7 @@ namespace Skeletown_Game
         private Player _player;
         private NPC _currentNPC;
         private Dialogue _currentDialogue;
+        private DialogueFlag _currentFlag;
         private const int DIALOGUE_ID = 1;
         private const int MOVE_ID = 2;
         private int menu_ID = 0;
@@ -77,13 +78,6 @@ namespace Skeletown_Game
 
         private void MoveTo(Location newLocation)
         {
-            // Is the area available to enter?
-            if (newLocation.IsLocked)
-            {
-                menu_ID = MOVE_ID;
-                return;
-            }
-
             // Mark location as having been entered
             _player.IsNewLocation(newLocation);
 
@@ -99,6 +93,7 @@ namespace Skeletown_Game
             SwapDialogueButton();
 
             // Set up dialogue
+            _currentFlag = null;
             DisplayDialogue(0);
         }
 
@@ -130,14 +125,13 @@ namespace Skeletown_Game
             // NPC here, so initiate dialogue with them
             if (_currentNPC != null)
             {
-                // Finding dialogue
                 _currentDialogue = World.NPCDialogueByID(_currentNPC, responseID);
+
             }
 
             // No NPC, use location dialogue instead
             else
             {
-                // Finding dialogue
                 _currentDialogue = World.LocationDialogueByID(_player.CurrentLocation, responseID);
             }
 
@@ -148,34 +142,40 @@ namespace Skeletown_Game
                 return false;
             }
 
-            // Dialogue exists
-            rtbMessages.Text = _currentDialogue.ToUserDialogue;
-
-            // Search for any dialogue updates
-            if (_currentNPC != null && _currentNPC.Flag != null)
+            // Check the dialogue flag at the location, if there is one
+            if (_currentNPC != null)
             {
-                if (_player.IsFlagCompleted(_currentNPC.Flag))
+                _currentFlag = _currentNPC.Flag;
+            }
+
+            else {
+                _currentFlag = _player.CurrentLocation.Flag;
+            }
+
+            // If we have the clues and items necessary to complete the flag, then add the new dialogue
+            if (_player.IsFlagCompleted(_currentFlag))
+            {
+                AddNewDialogue();
+            }
+
+            // Remove flag and unlock locations once the dialogue has been selected
+            else if(_currentFlag != null && _currentDialogue.ID == _currentFlag.NewDialogue.ID){
+                _currentFlag = null;
+
+                if(_currentNPC != null)
                 {
-                    Dialogue AddDialogue = World.NPCDialogueByID(_currentNPC, _currentNPC.Flag.NewDialoguePath);
-                    AddDialogue.AddNewResponse(_currentNPC.Flag.NewResponse, _currentNPC.Flag.NewDialogue.ID);
-
-                    _currentNPC.DialogueTree.Add(_currentNPC.Flag.NewDialogue);
-
                     _currentNPC.Flag = null;
                 }
-            }
-
-            else if (_player.CurrentLocation.Flag != null){
-                if (_player.IsFlagCompleted(_player.CurrentLocation.Flag))
+                else
                 {
-                    Dialogue AddDialogue = World.LocationDialogueByID(_player.CurrentLocation, _player.CurrentLocation.Flag.NewDialoguePath);
-                    AddDialogue.AddNewResponse(_player.CurrentLocation.Flag.NewResponse, _player.CurrentLocation.Flag.NewDialogue.ID);
-
-                    _player.CurrentLocation.DialogueTree.Add(_player.CurrentLocation.Flag.NewDialogue);
-
                     _player.CurrentLocation.Flag = null;
                 }
+
+                _player.CurrentLocation.UnlockAdjacentLocations(_currentFlag);
             }
+
+            // Display text to user
+            rtbMessages.Text = _currentDialogue.ToUserDialogue;
 
             // Giving user dialogue responses
             listMenu.DataSource = new BindingSource(_currentDialogue.responseDictionary(), null);
@@ -190,33 +190,44 @@ namespace Skeletown_Game
                 btnInventory_Click();
             }
 
-            // Checking for clues
+            // If a clue exists at this dialogue, add to inventory
             if (_player.checkForClues(_currentDialogue))
             {
                 btnClues_Click();
             }
 
             // Updates
-            UpdateLocations();
             UpdateDGV();
 
             return true;
         }
 
-        private void UpdateLocations()
+        private void AddNewDialogue()
         {
-            DialogueFlag flag;
-            if(_currentNPC != null)
-            {
-                flag = _currentNPC.Flag;
-            }
-            else
-            {
-                flag = _player.CurrentLocation.Flag;
+            // If NPC Dialogue
+            if (_currentNPC != null)
+            {             
+                // Adds a new response to a specific dialogue
+                Dialogue AddDialogue = World.NPCDialogueByID(_currentNPC, _currentFlag.NewDialoguePath);
+                AddDialogue.AddNewResponse(_currentFlag.NewResponse, _currentFlag.NewDialogue.ID);
+
+                // Adds the full dialogue into the dialogue tree
+                _currentNPC.DialogueTree.Add(_currentFlag.NewDialogue);
             }
 
-            // Unlocks any new areas for this location based on dialogue checks
-            _player.CurrentLocation.UnlockAdjacentLocations(flag);
+            // If Location Dialogue
+            else
+            {             
+                // Adds a new response to a specific dialogue
+                Dialogue AddDialogue = World.LocationDialogueByID(_player.CurrentLocation, _currentFlag.NewDialoguePath);
+                AddDialogue.AddNewResponse(_currentFlag.NewResponse, _currentFlag.NewDialogue.ID);
+
+                // Adds the full dialogue into the dialogue tree
+                _player.CurrentLocation.DialogueTree.Add(_currentFlag.NewDialogue);
+            }
+
+            // Sets the flag as invalid, meaning its dialogue won't be readded
+            _currentFlag.NewDialoguePath = 0;
         }
 
         private void UpdateInventoryListInUI()

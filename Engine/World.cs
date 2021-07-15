@@ -47,11 +47,14 @@ namespace Engine
         {
             // Creating clues
             Clue closedBar = new Clue(CLUE_ID_CLOSED_BAR, "The Closed Bar",
-                "Why did the bouncer seem on edge?");
+                "Why did the bouncer seem so on edge?",
+                "Based on the bouncer's reaction, someone from the bar must have visited the museum last night");
             Clue murderNotDeath = new Clue(CLUE_ID_MURDER_NOT_DEATH, "Benny's Death",
-                "Why do the police believe Benny's death was a murder?");
+                "Why do the police believe Benny's death was a murder?",
+                null);
             Clue susGift = new Clue(CLUE_ID_SUS_GIFT, "CaBone's Gift",
-                "What gift did CaBone receive yesterday?");
+                "What gift did CaBone receive yesterday?",
+                null);
 
             // Adding clues to list
             Clues.Add(closedBar);

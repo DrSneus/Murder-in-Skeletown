@@ -1,4 +1,7 @@
 TO DO:
+- Clues
+	- Change clue positions by most recently added
+	- Change clue description based on clue completion
 - NPCs
 	- Art (pixel?)
 - UI
