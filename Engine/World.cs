@@ -43,6 +43,22 @@ namespace Engine
             Items.Add(new Item(ITEM_ID_BEER, "\'Skul\' Brand Beer", "Specialty drink from \"Bone Dry\""));
         }
 
+        private static void PopulateClues()
+        {
+            // Creating clues
+            Clue closedBar = new Clue(CLUE_ID_CLOSED_BAR, "The Closed Bar",
+                "Why did the bouncer seem on edge?");
+            Clue murderNotDeath = new Clue(CLUE_ID_MURDER_NOT_DEATH, "Benny's Death",
+                "Why do the police believe Benny's death was a murder?");
+            Clue susGift = new Clue(CLUE_ID_SUS_GIFT, "CaBone's Gift",
+                "What gift did CaBone receive yesterday?");
+
+            // Adding clues to list
+            Clues.Add(closedBar);
+            Clues.Add(murderNotDeath);
+            Clues.Add(susGift);
+        }
+
         private static void PopulateNPCs()
         {
             // Creating NPCS
@@ -73,22 +89,6 @@ namespace Engine
 
             // Adding NPCs to List
             NPCs.Add(bouncer);
-        }
-
-        private static void PopulateClues()
-        {
-            // Creating clues
-            Clue closedBar = new Clue(CLUE_ID_CLOSED_BAR, "The Closed Bar",
-                "Why did the bouncer seem on edge?");
-            Clue murderNotDeath = new Clue(CLUE_ID_MURDER_NOT_DEATH, "Benny's Death",
-                "Was Benny's death actually a murder?");
-            Clue susGift = new Clue(CLUE_ID_SUS_GIFT, "CaBone's Gift",
-                "What did CaBone receive yesterday?");
-
-            // Adding clues to list
-            Clues.Add(closedBar);
-            Clues.Add(murderNotDeath);
-            Clues.Add(susGift);
         }
 
         private static void PopulateLocations()

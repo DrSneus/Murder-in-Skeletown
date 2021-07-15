@@ -29,6 +29,7 @@ namespace Skeletown_Game
         /// </summary>
         private void InitializeComponent()
         {
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             this.listMenu = new System.Windows.Forms.ListBox();
             this.btnMove = new System.Windows.Forms.Button();
             this.btnDialogue = new System.Windows.Forms.Button();
@@ -123,8 +124,17 @@ namespace Skeletown_Game
             this.dgvData.AllowUserToDeleteRows = false;
             this.dgvData.AllowUserToResizeColumns = false;
             this.dgvData.AllowUserToResizeRows = false;
+            this.dgvData.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
             this.dgvData.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvData.ColumnHeadersVisible = false;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("NSimSun", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvData.DefaultCellStyle = dataGridViewCellStyle1;
             this.dgvData.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
             this.dgvData.Location = new System.Drawing.Point(746, 86);
             this.dgvData.MultiSelect = false;
@@ -133,7 +143,7 @@ namespace Skeletown_Game
             this.dgvData.RowHeadersVisible = false;
             this.dgvData.RowHeadersWidth = 62;
             this.dgvData.RowTemplate.Height = 33;
-            this.dgvData.Size = new System.Drawing.Size(531, 473);
+            this.dgvData.Size = new System.Drawing.Size(530, 473);
             this.dgvData.TabIndex = 27;
             // 
             // pbNPC

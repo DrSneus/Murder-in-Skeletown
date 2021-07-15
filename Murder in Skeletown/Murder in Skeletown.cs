@@ -224,7 +224,7 @@ namespace Skeletown_Game
             dgvData.RowHeadersVisible = false;
             dgvData.ColumnCount = 2;
             dgvData.Columns[0].Width = 200;
-            dgvData.Columns[1].Width = 340;
+            dgvData.Columns[1].Width = 330;
             dgvData.Rows.Clear();
             foreach (Item i in _player.Inventory)
             {
@@ -238,7 +238,7 @@ namespace Skeletown_Game
             dgvData.RowHeadersVisible = false;
             dgvData.ColumnCount = 2;
             dgvData.Columns[0].Width = 200;
-            dgvData.Columns[1].Width = 340;
+            dgvData.Columns[1].Width = 330;
             dgvData.Rows.Clear();
             foreach (Clue pClue in _player.Clues)
             {
