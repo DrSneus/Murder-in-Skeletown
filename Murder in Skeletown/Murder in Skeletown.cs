@@ -100,10 +100,6 @@ namespace Skeletown_Game
 
             // Set up dialogue
             DisplayDialogue(0);
-
-            // Refresh player's inventory list
-            UpdateInventoryListInUI();
-            UpdateClueListInUI();
         }
 
         private void SetUpNPC(NPC npcCheck)
@@ -189,15 +185,20 @@ namespace Skeletown_Game
             menu_ID = DIALOGUE_ID;
 
             // If an item exists at this dialogue, add to inventory
-            _player.checkForItems(_currentDialogue);
+            if (_player.checkForItems(_currentDialogue))
+            {
+                btnInventory_Click();
+            }
 
             // Checking for clues
-            _player.checkForClues(_currentDialogue);
+            if (_player.checkForClues(_currentDialogue))
+            {
+                btnClues_Click();
+            }
 
             // Updates
             UpdateLocations();
-            UpdateClueListInUI();
-            UpdateInventoryListInUI();
+            UpdateDGV();
 
             return true;
         }
@@ -220,27 +221,29 @@ namespace Skeletown_Game
 
         private void UpdateInventoryListInUI()
         {
-            dgvInventory.RowHeadersVisible = false;
-            dgvInventory.ColumnCount = 1;
-            dgvInventory.Columns[0].Width = 540;
-            dgvInventory.Rows.Clear();
+            dgvData.RowHeadersVisible = false;
+            dgvData.ColumnCount = 2;
+            dgvData.Columns[0].Width = 200;
+            dgvData.Columns[1].Width = 340;
+            dgvData.Rows.Clear();
             foreach (Item i in _player.Inventory)
             {
-                dgvInventory.Rows.Add(new[] {
-                    i.Name});
+                dgvData.Rows.Add(new[] {
+                    i.Name, i.Description});
             }
         }
 
         private void UpdateClueListInUI()
         {
-            dgvClues.RowHeadersVisible = false;
-            dgvClues.ColumnCount = 1;
-            dgvClues.Columns[0].Width = 540;
-            dgvClues.Rows.Clear();
+            dgvData.RowHeadersVisible = false;
+            dgvData.ColumnCount = 2;
+            dgvData.Columns[0].Width = 200;
+            dgvData.Columns[1].Width = 340;
+            dgvData.Rows.Clear();
             foreach (Clue pClue in _player.Clues)
             {
-                dgvClues.Rows.Add(new[] {
-                    pClue.Name});
+                dgvData.Rows.Add(new[] {
+                    pClue.Name, pClue.Description});
             }
         }
 
@@ -254,5 +257,48 @@ namespace Skeletown_Game
             }
         }
 
+        private void UpdateDGV()
+        {
+            if (btnInventory.Enabled)
+            {
+                UpdateClueListInUI();
+            }
+            else
+            {
+                UpdateInventoryListInUI();
+            }
+        }
+
+        private void btnInventory_Click(object sender = null, EventArgs e = null)
+        {
+            // Swap buttons
+            btnInventory.Enabled = false;
+            btnInventory.Visible = false;
+            btnClues.Enabled = true;
+            btnClues.Visible = true;
+
+            // Enable labels
+            lblInventory.Visible = true;
+            lblClues.Visible = false;
+
+            // Swap data
+            UpdateInventoryListInUI();
+        }
+
+        private void btnClues_Click(object sender = null, EventArgs e = null)
+        {
+            // Swap buttons
+            btnInventory.Enabled = true;
+            btnInventory.Visible = true;
+            btnClues.Enabled = false;
+            btnClues.Visible = false;
+
+            // Enable labels
+            lblInventory.Visible = false;
+            lblClues.Visible = true;
+
+            // Swap data
+            UpdateClueListInUI();
+        }
     }
 }

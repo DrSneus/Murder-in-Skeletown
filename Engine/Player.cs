@@ -20,24 +20,32 @@ namespace Engine
             Clues = new List<Clue>();
         }
 
-        public void checkForClues(Dialogue dialogue)
+        public bool checkForClues(Dialogue dialogue)
         {
             Clue dialogueclue = World.ClueByDialogue(dialogue);
             if (dialogueclue != null)
             {
                 Clues.Add(dialogueclue);
                 dialogue.GiveClue = null;
+
+                return true;
             }
+
+            return false;
         }
 
-        public void checkForItems(Dialogue dialogue)
+        public bool checkForItems(Dialogue dialogue)
         {
             Item dialogueitem = World.ItemByDialogue(dialogue);
             if (dialogueitem != null)
             {
                 Inventory.Add(dialogueitem);
                 dialogue.GiveItem = null;
+
+                return true;
             }
+
+            return false;
         }
 
         public bool IsFlagCompleted(DialogueFlag flag)

@@ -35,17 +35,17 @@ namespace Skeletown_Game
             this.rtbMessages = new System.Windows.Forms.RichTextBox();
             this.pbMain = new System.Windows.Forms.PictureBox();
             this.lblLocation = new System.Windows.Forms.Label();
-            this.dgvInventory = new System.Windows.Forms.DataGridView();
+            this.dgvData = new System.Windows.Forms.DataGridView();
             this.pbNPC = new System.Windows.Forms.PictureBox();
-            this.dgvClues = new System.Windows.Forms.DataGridView();
             this.lblBlackBar1 = new System.Windows.Forms.Label();
             this.lblBlackBar2 = new System.Windows.Forms.Label();
-            this.lblStuff = new System.Windows.Forms.Label();
+            this.lblInventory = new System.Windows.Forms.Label();
             this.lblClues = new System.Windows.Forms.Label();
+            this.btnClues = new System.Windows.Forms.Button();
+            this.btnInventory = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.pbMain)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dgvInventory)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvData)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbNPC)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dgvClues)).BeginInit();
             this.SuspendLayout();
             // 
             // listMenu
@@ -117,24 +117,24 @@ namespace Skeletown_Game
             this.lblLocation.Text = "LocationText";
             this.lblLocation.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // dgvInventory
+            // dgvData
             // 
-            this.dgvInventory.AllowUserToAddRows = false;
-            this.dgvInventory.AllowUserToDeleteRows = false;
-            this.dgvInventory.AllowUserToResizeColumns = false;
-            this.dgvInventory.AllowUserToResizeRows = false;
-            this.dgvInventory.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvInventory.ColumnHeadersVisible = false;
-            this.dgvInventory.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
-            this.dgvInventory.Location = new System.Drawing.Point(746, 86);
-            this.dgvInventory.MultiSelect = false;
-            this.dgvInventory.Name = "dgvInventory";
-            this.dgvInventory.ReadOnly = true;
-            this.dgvInventory.RowHeadersVisible = false;
-            this.dgvInventory.RowHeadersWidth = 62;
-            this.dgvInventory.RowTemplate.Height = 33;
-            this.dgvInventory.Size = new System.Drawing.Size(254, 473);
-            this.dgvInventory.TabIndex = 27;
+            this.dgvData.AllowUserToAddRows = false;
+            this.dgvData.AllowUserToDeleteRows = false;
+            this.dgvData.AllowUserToResizeColumns = false;
+            this.dgvData.AllowUserToResizeRows = false;
+            this.dgvData.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvData.ColumnHeadersVisible = false;
+            this.dgvData.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
+            this.dgvData.Location = new System.Drawing.Point(746, 86);
+            this.dgvData.MultiSelect = false;
+            this.dgvData.Name = "dgvData";
+            this.dgvData.ReadOnly = true;
+            this.dgvData.RowHeadersVisible = false;
+            this.dgvData.RowHeadersWidth = 62;
+            this.dgvData.RowTemplate.Height = 33;
+            this.dgvData.Size = new System.Drawing.Size(531, 473);
+            this.dgvData.TabIndex = 27;
             // 
             // pbNPC
             // 
@@ -145,25 +145,6 @@ namespace Skeletown_Game
             this.pbNPC.TabIndex = 31;
             this.pbNPC.TabStop = false;
             this.pbNPC.Visible = false;
-            // 
-            // dgvClues
-            // 
-            this.dgvClues.AllowUserToAddRows = false;
-            this.dgvClues.AllowUserToDeleteRows = false;
-            this.dgvClues.AllowUserToResizeColumns = false;
-            this.dgvClues.AllowUserToResizeRows = false;
-            this.dgvClues.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvClues.ColumnHeadersVisible = false;
-            this.dgvClues.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
-            this.dgvClues.Location = new System.Drawing.Point(1023, 86);
-            this.dgvClues.MultiSelect = false;
-            this.dgvClues.Name = "dgvClues";
-            this.dgvClues.ReadOnly = true;
-            this.dgvClues.RowHeadersVisible = false;
-            this.dgvClues.RowHeadersWidth = 62;
-            this.dgvClues.RowTemplate.Height = 33;
-            this.dgvClues.Size = new System.Drawing.Size(254, 473);
-            this.dgvClues.TabIndex = 32;
             // 
             // lblBlackBar1
             // 
@@ -183,50 +164,79 @@ namespace Skeletown_Game
             this.lblBlackBar2.TabIndex = 34;
             this.lblBlackBar2.Text = "blackbar2";
             // 
-            // lblStuff
+            // lblInventory
             // 
-            this.lblStuff.Font = new System.Drawing.Font("Courier New", 22F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.lblStuff.Location = new System.Drawing.Point(746, 9);
-            this.lblStuff.Name = "lblStuff";
-            this.lblStuff.Size = new System.Drawing.Size(254, 74);
-            this.lblStuff.TabIndex = 35;
-            this.lblStuff.Text = "My Stuff";
-            this.lblStuff.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblInventory.BackColor = System.Drawing.SystemColors.ControlDarkDark;
+            this.lblInventory.Font = new System.Drawing.Font("Courier New", 22F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.lblInventory.ForeColor = System.Drawing.SystemColors.ButtonFace;
+            this.lblInventory.Location = new System.Drawing.Point(746, 24);
+            this.lblInventory.Name = "lblInventory";
+            this.lblInventory.Size = new System.Drawing.Size(254, 74);
+            this.lblInventory.TabIndex = 35;
+            this.lblInventory.Text = "My Stuff";
+            this.lblInventory.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // lblClues
             // 
+            this.lblClues.BackColor = System.Drawing.SystemColors.ControlDarkDark;
             this.lblClues.Font = new System.Drawing.Font("Courier New", 22F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.lblClues.Location = new System.Drawing.Point(1023, 9);
+            this.lblClues.ForeColor = System.Drawing.SystemColors.ButtonFace;
+            this.lblClues.Location = new System.Drawing.Point(1023, 24);
             this.lblClues.Name = "lblClues";
             this.lblClues.Size = new System.Drawing.Size(254, 74);
             this.lblClues.TabIndex = 36;
             this.lblClues.Text = "Clues";
             this.lblClues.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblClues.Visible = false;
+            // 
+            // btnClues
+            // 
+            this.btnClues.Font = new System.Drawing.Font("Courier New", 22F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.btnClues.Location = new System.Drawing.Point(1023, 9);
+            this.btnClues.Name = "btnClues";
+            this.btnClues.Size = new System.Drawing.Size(254, 74);
+            this.btnClues.TabIndex = 37;
+            this.btnClues.Text = "Clues";
+            this.btnClues.UseVisualStyleBackColor = true;
+            this.btnClues.Click += new System.EventHandler(this.btnClues_Click);
+            // 
+            // btnInventory
+            // 
+            this.btnInventory.Enabled = false;
+            this.btnInventory.Font = new System.Drawing.Font("Courier New", 22F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.btnInventory.Location = new System.Drawing.Point(746, 9);
+            this.btnInventory.Name = "btnInventory";
+            this.btnInventory.Size = new System.Drawing.Size(254, 74);
+            this.btnInventory.TabIndex = 38;
+            this.btnInventory.Text = "My Stuff";
+            this.btnInventory.UseVisualStyleBackColor = true;
+            this.btnInventory.Visible = false;
+            this.btnInventory.Click += new System.EventHandler(this.btnInventory_Click);
             // 
             // Skeletown_Game
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1298, 917);
+            this.Controls.Add(this.dgvData);
             this.Controls.Add(this.lblClues);
-            this.Controls.Add(this.lblStuff);
             this.Controls.Add(this.lblLocation);
             this.Controls.Add(this.lblBlackBar2);
             this.Controls.Add(this.lblBlackBar1);
-            this.Controls.Add(this.dgvClues);
             this.Controls.Add(this.pbNPC);
-            this.Controls.Add(this.dgvInventory);
             this.Controls.Add(this.btnMove);
             this.Controls.Add(this.btnDialogue);
             this.Controls.Add(this.rtbMessages);
             this.Controls.Add(this.pbMain);
             this.Controls.Add(this.listMenu);
+            this.Controls.Add(this.lblInventory);
+            this.Controls.Add(this.btnInventory);
+            this.Controls.Add(this.btnClues);
             this.Name = "Skeletown_Game";
             this.Text = "Murder in Skeletown";
             ((System.ComponentModel.ISupportInitialize)(this.pbMain)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dgvInventory)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvData)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbNPC)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dgvClues)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -240,13 +250,14 @@ namespace Skeletown_Game
         private System.Windows.Forms.RichTextBox rtbMessages;
         private System.Windows.Forms.PictureBox pbMain;
         private System.Windows.Forms.Label lblLocation;
-        private System.Windows.Forms.DataGridView dgvInventory;
+        private System.Windows.Forms.DataGridView dgvData;
         private System.Windows.Forms.PictureBox pbNPC;
-        private System.Windows.Forms.DataGridView dgvClues;
         private System.Windows.Forms.Label lblBlackBar1;
         private System.Windows.Forms.Label lblBlackBar2;
-        private System.Windows.Forms.Label lblStuff;
+        private System.Windows.Forms.Label lblInventory;
         private System.Windows.Forms.Label lblClues;
+        private System.Windows.Forms.Button btnClues;
+        private System.Windows.Forms.Button btnInventory;
     }
 }
 

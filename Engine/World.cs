@@ -39,8 +39,8 @@ namespace Engine
 
         private static void PopulateItems()
         {
-            Items.Add(new Item(ITEM_ID_NEWS, "Today's Newspaper", "It features the obituary for Benny Bones"));
-            Items.Add(new Item(ITEM_ID_BEER, "\'Skul\' Brand Beer", "The specialty from \"Bone Dry\""));
+            Items.Add(new Item(ITEM_ID_NEWS, "Today's Newspaper", "Features the obituary for Benny Bones"));
+            Items.Add(new Item(ITEM_ID_BEER, "\'Skul\' Brand Beer", "Specialty drink from \"Bone Dry\""));
         }
 
         private static void PopulateNPCs()
@@ -78,12 +78,12 @@ namespace Engine
         private static void PopulateClues()
         {
             // Creating clues
-            Clue closedBar = new Clue(CLUE_ID_CLOSED_BAR, "Why is the bar closed?",
-                "The bouncer seemed on edge, maybe he's hiding the real reason the bar is closed");
-            Clue murderNotDeath = new Clue(CLUE_ID_MURDER_NOT_DEATH, "Was Benny murdered?",
-                "There must be some sign of how Benny died, if I can examine his bones");
-            Clue susGift = new Clue(CLUE_ID_SUS_GIFT, "What was CaBone's gift?",
-                "CaBone mentioned that he received something yesterday that he was anticipating");
+            Clue closedBar = new Clue(CLUE_ID_CLOSED_BAR, "The Closed Bar",
+                "Why did the bouncer seem on edge?");
+            Clue murderNotDeath = new Clue(CLUE_ID_MURDER_NOT_DEATH, "Benny's Death",
+                "Was Benny's death actually a murder?");
+            Clue susGift = new Clue(CLUE_ID_SUS_GIFT, "CaBone's Gift",
+                "What did CaBone receive yesterday?");
 
             // Adding clues to list
             Clues.Add(closedBar);
