@@ -29,5 +29,19 @@ namespace Engine
             DialogueTree = new List<Dialogue>();
             Flag = null;
         }
+
+        public void UnlockAdjacentLocations(DialogueFlag flag)
+        {
+            // Will unlock every adjacent location if the flag has been checked off
+            // This limits the number of locked locations per area, but it's a worthwhile trade
+            // for the simplicity of the solution.
+            if(flag == null)
+            {
+                foreach (Location location in AdjacentLocations)
+                {
+                    location.IsLocked = false;
+                }
+            }
+        }
     }
 }

@@ -59,9 +59,15 @@ namespace Skeletown_Game
         private void btnMove_Click(object sender, EventArgs e)
         {
             menu_ID = 0;
-            // Adding possible locations, and new locations
-            List<Location> moveOptions = _player.CurrentLocation.AdjacentLocations.ToList();
-            moveOptions.Remove(_player.CurrentLocation);
+            // Adding all adjacent, unlocked locations
+            List<Location> moveOptions = new List<Location>();
+            foreach(Location adjacent in _player.CurrentLocation.AdjacentLocations)
+            {
+                if (!adjacent.IsLocked)
+                {
+                    moveOptions.Add(adjacent);
+                }
+            }
 
             // Changing the menu to be based on moveOptions
             listMenu.DataSource = moveOptions;
@@ -188,10 +194,28 @@ namespace Skeletown_Game
             // Checking for clues
             _player.checkForClues(_currentDialogue);
 
+            // Updates
+            UpdateLocations();
             UpdateClueListInUI();
             UpdateInventoryListInUI();
 
             return true;
+        }
+
+        private void UpdateLocations()
+        {
+            DialogueFlag flag;
+            if(_currentNPC != null)
+            {
+                flag = _currentNPC.Flag;
+            }
+            else
+            {
+                flag = _player.CurrentLocation.Flag;
+            }
+
+            // Unlocks any new areas for this location based on dialogue checks
+            _player.CurrentLocation.UnlockAdjacentLocations(flag);
         }
 
         private void UpdateInventoryListInUI()

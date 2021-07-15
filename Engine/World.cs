@@ -111,6 +111,8 @@ namespace Engine
             nightclub.AdjacentLocations.Add(citySquare);
             nightclub.AdjacentLocations.Add(insideNightClub);
 
+            insideNightClub.AdjacentLocations.Add(nightclub);
+
             museum.AdjacentLocations.Add(citySquare);
 
 
@@ -147,10 +149,16 @@ namespace Engine
                 new double[] { 0.1, 0 },
                 ClueByID(CLUE_ID_MURDER_NOT_DEATH)));
 
+            insideNightClub.DialogueTree.Add(new Dialogue("Dozens of skeletons in suits are crowded around the bar, none of them pay any attention to you.", 0,
+                new string[] { "Examine the museum's exterior", "Eavesdrop on the police" },
+                new double[] { 0.1, 0.2 }));
+
+
             // Add the locations to the static list
             Locations.Add(home);
             Locations.Add(citySquare);
             Locations.Add(nightclub);
+            Locations.Add(insideNightClub);
             Locations.Add(museum);
         }
 
