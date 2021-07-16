@@ -160,6 +160,8 @@ namespace Skeletown_Game
 
             // Remove flag and unlock locations once the dialogue has been selected
             else if(_currentFlag != null && _currentDialogue.ID == _currentFlag.NewDialogue.ID){
+                World.ClueByID(_currentFlag.ClueReq.ID).ReplaceDialogue();
+                
                 _currentFlag = null;
 
                 if(_currentNPC != null)
@@ -237,11 +239,13 @@ namespace Skeletown_Game
             dgvData.Columns[0].Width = 200;
             dgvData.Columns[1].Width = 330;
             dgvData.Rows.Clear();
+            _player.Inventory.Reverse();
             foreach (Item i in _player.Inventory)
             {
                 dgvData.Rows.Add(new[] {
                     i.Name, i.Description});
             }
+            _player.Inventory.Reverse();
         }
 
         private void UpdateClueListInUI()
@@ -251,11 +255,13 @@ namespace Skeletown_Game
             dgvData.Columns[0].Width = 200;
             dgvData.Columns[1].Width = 330;
             dgvData.Rows.Clear();
+            _player.Clues.Reverse();
             foreach (Clue pClue in _player.Clues)
             {
                 dgvData.Rows.Add(new[] {
                     pClue.Name, pClue.Description});
             }
+            _player.Clues.Reverse();
         }
 
         private void SwapDialogueButton()

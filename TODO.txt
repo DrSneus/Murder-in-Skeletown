@@ -1,7 +1,4 @@
 TO DO:
-- Clues
-	- Change clue positions by most recently added
-	- Change clue description based on clue completion
 - NPCs
 	- Art (pixel?)
 - UI
@@ -17,7 +14,9 @@ DONE:
 	- Look around option
 - Clues
 	- Are now given in response to certain dialogue prompts
-	- Can be solved with key items to unlock areas/dialogue	
+	- Can be solved with key items to unlock areas/dialogue
+	- Description now changes based on clue completion
+	- Change clue positions by most recently added
 - Item Menu
 	- Description section
 - Art

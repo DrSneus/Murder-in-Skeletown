@@ -18,5 +18,10 @@ namespace Engine
             Description = description;
             CompletedDescription = completed;
         }
+
+        public void ReplaceDialogue()
+        {
+            Description = CompletedDescription;
+        }
     }
 }
