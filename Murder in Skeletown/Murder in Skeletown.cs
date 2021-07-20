@@ -24,8 +24,7 @@ namespace Skeletown_Game
         public Skeletown_Game()
         {
             InitializeComponent();
-             _player = new Player("UserName");
-            _player.Inventory.Add(World.ItemByID(World.ITEM_ID_NEWS));
+            _player = new Player("UserName");
             MoveTo(World.LocationByID(World.LOCATION_ID_HOME));
         }
 
