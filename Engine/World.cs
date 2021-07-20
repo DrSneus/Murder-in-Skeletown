@@ -22,6 +22,7 @@ namespace Engine
 
         public const int NPC_ID_BOUNCER = 1;
         public const int NPC_ID_DIRECTOR = 2;
+        public const int NPC_ID_GANGBOSS = 3;
 
         public const int CLUE_ID_SOLVE_MURDER = 1;
         public const int CLUE_ID_CLOSED_BAR = 2;
@@ -30,6 +31,7 @@ namespace Engine
         public const int CLUE_ID_MISSING_GEM = 5;
         public const int CLUE_ID_SPOTLESS_SCENE = 6;
         public const int CLUE_ID_MURDER_WEAPON = 7;
+        public const int CLUE_ID_FIND_HUGH = 8;
 
         public const int LOCATION_ID_HOME = 1;
         public const int LOCATION_ID_CITY_SQUARE = 2;
@@ -39,6 +41,7 @@ namespace Engine
         public const int LOCATION_ID_INMUSEUM = 6;
         public const int LOCATION_ID_GIFTSHOP = 7;
         public const int LOCATION_ID_CRIMESCENE = 8;
+        public const int LOCATION_ID_NIGHTCLUBBACKROOM = 9;
 
         static World()
         {
@@ -68,8 +71,8 @@ namespace Engine
                 "I need to find someone who can get me in the museum",
                 "The director's keys let me enter the musem");
             Clue susGift = new Clue(CLUE_ID_SUS_GIFT, "CaBone's Gift",
-                "What gift is CaBone expecting?",
-                "CaBone was expecting the pearl from the museum");
+                "What gift was CaBone expecting?",
+                "CaBone's gift is related to that shard I saw in the museum");
             Clue missingGem = new Clue(CLUE_ID_MISSING_GEM, "The Missing Gem",
                 "A pearl was missing in the gem hall, where could it have gone?",
                 "The pearl was shattered against Benny's skull");
@@ -79,6 +82,9 @@ namespace Engine
             Clue murderWeapon = new Clue(CLUE_ID_MURDER_WEAPON, "The Murder Weapon",
                 "Benny was probably struck with some kind of blunt object. Where could the weapon have gone?",
                 "The murder weapon was the pearl, it must have shattered");
+            Clue findHugh = new Clue(CLUE_ID_FIND_HUGH, "Find Hugh",
+                "CaBone told you Hugh's probably hiding near the city square",
+                "You found Hugh");
 
             // Adding clues to list
             Clues.Add(closedBar);
@@ -87,6 +93,7 @@ namespace Engine
             Clues.Add(missingGem);
             Clues.Add(spotlessScene);
             Clues.Add(murderWeapon);
+            Clues.Add(findHugh);
         }
 
         private static void PopulateNPCs()
@@ -94,10 +101,9 @@ namespace Engine
             // Creating NPCS
             NPC bouncer = new NPC(NPC_ID_BOUNCER, "Bouncer");
             NPC director = new NPC(NPC_ID_DIRECTOR, "Director");
+            NPC gangBoss = new NPC(NPC_ID_GANGBOSS, "CaBone");
 
             // Creating Dialogue, and adding flags for additional dialogues
-
-            // Bouncer NPC
             bouncer.DialogueTree.Add(new Dialogue("Sorry, no one in today unless you're invited.", 0,
                 new string[] { "What's the occasion?", "Let me in. Now", "What do you know about Benny Bones' death?" },
                 new double[] { 0.1, 0.2, 0.3 }));
@@ -111,18 +117,17 @@ namespace Engine
                new string[] { "Okay?" },
                new double[] { 99 },
                ClueByID(CLUE_ID_CLOSED_BAR)));
-
             bouncer.Flag = new DialogueFlag(ClueByID(CLUE_ID_CLOSED_BAR), ItemByID(ITEM_ID_BUSINESS_CARD), 0.3,
-                "Someone from your establishment left this card behind at the museum where Benny died, should I let the police know?",
-                new Dialogue("I..uhh...that doesn't prove nothing! But uh...I guess I can let you in, just don't tell no one about that card!", 0.4,
+                "Found this card at the museum last night, know anything about it?",
+                new Dialogue("I..uhh...that doesn't prove nothing! It's uhhh...unrelated to our busines!" +
+                " But uh...I guess I can let you in, just don't tell no one about that card!", 0.4,
                 new string[] { "Thanks." },
                 new double[] { 99 }));
 
-            // Museum Director NPC
             director.DialogueTree.Add(new Dialogue("Please sir, have a look around!", 0,
                 new string[] { "Who are you?", "Did you know the victim?"},
                 new double[] { 0.1, 0.2 }));
-            director.DialogueTree.Add(new Dialogue("Name's Clavis, Clavis Cull. I'm the director of this fine museum, as well as the gift store manager!", 0.2,
+            director.DialogueTree.Add(new Dialogue("Name's Clavis, Clavis Cull. I'm the director of this fine museum, as well as the gift store manager!", 0.1,
                new string[] { "How's business?", "Did you know the victim?" },
                new double[] { 0.11, 0.2 }));
             director.DialogueTree.Add(new Dialogue("To be honest, we were doing quite poorly even before the murder. Probably just a matter of time before we go under.", 0.11,
@@ -140,9 +145,41 @@ namespace Engine
                 new string[] { "I see" },
                 new double[] { 99 } ));
 
+            gangBoss.DialogueTree.Add(new Dialogue("What do you want?", 0,
+                new string[] { "Who are you?", "Found this shard", "Know anything about the victim?" },
+                new double[] { 0.1, 0.2, 0.3 }));
+            gangBoss.DialogueTree.Add(new Dialogue("If the CaBone family name isn't familiar to you, then you might want to keep it that way, got it?", 0.1,
+               new string[] { "Understood ", "Did you know the victim?", "Happy Birthday!" },
+               new double[] { 0, 0.3, 0.11 }));
+            gangBoss.DialogueTree.Add(new Dialogue("Ha! Thanks kid.", 0.11,
+               new string[] { "Found this shard", "Do you know the victim?" },
+               new double[] { 0.2, 0.3 }));
+            gangBoss.DialogueTree.Add(new Dialogue("...Why is it in pieces?", 0.2,
+               new string[] { "Not sure" },
+               new double[] { .21 }));
+            gangBoss.DialogueTree.Add(new Dialogue("...Hugh's gotta lot to explain. Thanks for letting me know about this at least.", 0.21,
+               new string[] { "What is it?", "Hugh?" },
+               new double[] { .211, .212 }));
+            gangBoss.DialogueTree.Add(new Dialogue("A \'gift\' as it were, at least a piece of it. You may not want to inquire further on this matter.", 0.211,
+               new string[] { "Ok", "Hugh?" },
+               new double[] { 0, .212 }));
+            gangBoss.DialogueTree.Add(new Dialogue("Just some trash who was supposed to bring me a present, not break it. I'll send some of my boys to " +
+                "\"talk\" with him later...", 0.212,
+               new string[] { "Any way I can be of assistance?", "What is this shard anyways?" },
+               new double[] { 0, .2121 }));
+            gangBoss.DialogueTree.Add(new Dialogue("Tell you what. You've been more use in these last few minutes than Hugh's been in his entire existence. " +
+                "He's probably hiding near the city square. I'll let you talk to him, before I deal with him", 0.2121,
+               new string[] { "Thanks" },
+               new double[] { 0 },
+               ClueByID(CLUE_ID_FIND_HUGH)));
+            gangBoss.DialogueTree.Add(new Dialogue("That uh..Benny guy right? Nah, he wasn't involved with my family, to my knowledge anyways.", 0.3,
+                new string[] { "I see" },
+                new double[] { 99 }));
+
             // Adding NPCs to List
             NPCs.Add(bouncer);
             NPCs.Add(director);
+            NPCs.Add(gangBoss);
         }
 
         private static void PopulateLocations()
@@ -166,6 +203,9 @@ namespace Engine
 
             Location crimeScene = new Location(LOCATION_ID_CRIMESCENE, "Crime Scene");
 
+            Location nightclubBackroom = new Location(LOCATION_ID_NIGHTCLUBBACKROOM, "Bone Dry Bar - Back Room", true);
+                nightclubBackroom.NPCHere = NPCByID(NPC_ID_GANGBOSS);
+
             // Linking locations
             home.AdjacentLocations.Add(citySquare);
 
@@ -177,6 +217,7 @@ namespace Engine
             nightclub.AdjacentLocations.Add(insideNightClub);
 
             insideNightClub.AdjacentLocations.Add(nightclub);
+            insideNightClub.AdjacentLocations.Add(nightclubBackroom);
 
             museum.AdjacentLocations.Add(citySquare);
             museum.AdjacentLocations.Add(museumGiftShop);
@@ -188,6 +229,8 @@ namespace Engine
             museumGiftShop.AdjacentLocations.Add(museum);
 
             crimeScene.AdjacentLocations.Add(insideMuseum);
+
+            nightclubBackroom.AdjacentLocations.Add(insideNightClub);
 
             // Adding location dialogue
             home.DialogueTree.Add(new Dialogue("Your place of work, located just outside Skeletown", 0,
@@ -230,21 +273,31 @@ namespace Engine
                 new double[] { 99 }));
 
             insideNightClub.DialogueTree.Add(new Dialogue("Dozens of skeletons in suits are crowded around the bar. On stage, you see CaBone, the boss of the local mafia, preparing a speech", 0,
-                new string[] { "Listen to the speech", "Observe the crowd's faces" },
-                new double[] { 0.1, 0.2 }));
+                new string[] { "Listen to the speech", "Observe the crowd's faces", "Enter the backroom" },
+                new double[] { 0.1, 0.2, 0.3 }));
             insideNightClub.DialogueTree.Add(new Dialogue("\"My friends! I am delighted to have you join me here for my birthday this evening.\"", 0.1,
                 new string[] { "Continue listening", "Observe the crowd's faces" },
                 new double[] { 0.11, 0.2 }));
-            insideNightClub.DialogueTree.Add(new Dialogue("\"Later this evening, I will be receiving an even more extravagant gift from a work associate...\"", 0.11,
+            insideNightClub.DialogueTree.Add(new Dialogue("\"To be honest with you good people, yesterday we suffered a terrible loss; a gift we were expecting " +
+                "never arrived.\" His expression darkens as he scans the crowd.", 0.11,
                 new string[] { "Continue listening", "Observe the crowd's faces" },
                 new double[] { 0.111, 0.2 }));
             insideNightClub.DialogueTree.Add(new Dialogue("\"But this is a time of joy, so enough work talk! Let's party!\"", 0.111,
                 new string[] { "Look around", "Observe the crowd's faces" },
-                new double[] { 00, 0.2 }, 
+                new double[] { 0, 0.2 }, 
                 ClueByID(CLUE_ID_SUS_GIFT)));
             insideNightClub.DialogueTree.Add(new Dialogue("The crowd sounds joyful, but it's hard to read the facial expressions on skulls", 0.2,
                 new string[] { "Look around", "Listen to the speaker" },
                 new double[] { 0, 0.1 }));
+            insideNightClub.DialogueTree.Add(new Dialogue("A guard posted by the door stops you: \"The boss isn't entertaining visitors tonight, " +
+                "that is unless they have something for the boss...\"", 0.3,
+                new string[] { "Look around" },
+                new double[] { 0 }));
+            insideNightClub.Flag = new DialogueFlag(ClueByID(CLUE_ID_SUS_GIFT), ItemByID(ITEM_ID_GLOSSY_SHARD), 0.3,
+                "Show the security guard the glossy shard",
+                new Dialogue("\"Is that...I see. Okay, feel free to go through sir.\"", 0.31,
+                new string[] { "Thanks" },
+                new double[] { 0 }));
 
             insideMuseum.DialogueTree.Add(new Dialogue("The museum's main hall. Despite the police blocking the exterior entrances, it is empty.", 0,
                 new string[] { "Look around" },
@@ -285,7 +338,6 @@ namespace Engine
                 new string[] { "Glance around the room", "Examine Benny's body", "Examine the surrounding area" },
                 new double[] { 0, 0.1, 0.2 },
                 ItemByID(ITEM_ID_SCRAP_NOTE)));
-
             crimeScene.Flag = new DialogueFlag(ClueByID(CLUE_ID_SPOTLESS_SCENE), ItemByID(ITEM_ID_SHARDS), 0.2,
                 "Compare the shards with Benny's body",
                 new Dialogue("The shards match up perfectly, it seems as though this was the true scene of the crime." +
@@ -303,6 +355,7 @@ namespace Engine
             Locations.Add(insideMuseum);
             Locations.Add(museumGiftShop);
             Locations.Add(crimeScene);
+            Locations.Add(nightclubBackroom);
         }
 
         public static Item ItemByID(int id)

@@ -73,6 +73,16 @@ namespace Skeletown_Game.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap CaBone {
+            get {
+                object obj = ResourceManager.GetObject("CaBone", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap Director {
             get {
                 object obj = ResourceManager.GetObject("Director", resourceCulture);
