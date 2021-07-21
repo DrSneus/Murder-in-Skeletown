@@ -1,11 +1,8 @@
 TO DO:
-- NPCs
-	- Art (pixel?)
 - UI
-	- Better background color
-- Plot
-	- More NPCs and areas
-	- Story
+	- Nicer looking UI colors
+- Backgrounds
+	- Art for the backgrounds is needed
 
 DONE:
 - Option Menu
@@ -20,7 +17,9 @@ DONE:
 - Item Menu
 	- Description section
 - Art
-	- Began pixel art for NPCs
+	- Pixel art for NPCs
 - UI
 	- Possible final layout established
 	- Displays descriptions for clues and items, and updates automatically
+- Plot
+	- Story is completed

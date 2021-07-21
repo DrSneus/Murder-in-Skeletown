@@ -121,6 +121,12 @@ namespace Skeletown_Game
         {
             menu_ID = 0;
 
+            // Check if we've reached the end of the game
+            if (responseID == 100)
+            {
+                endGame();
+            }
+
             // NPC here, so initiate dialogue with them
             if (_currentNPC != null)
             {
@@ -315,6 +321,17 @@ namespace Skeletown_Game
 
             // Swap data
             UpdateClueListInUI();
+        }
+
+        private void endGame()
+        {
+            MoveTo(World.LocationByID(World.LOCATION_ID_ENDSCREEN));
+            btnDialogue.Enabled = false;
+            btnDialogue.Visible = false;
+            btnMove.Enabled = false;
+            btnMove.Visible = false;
+
+            dgvData.Size = new Size(530, 808);
         }
     }
 }
