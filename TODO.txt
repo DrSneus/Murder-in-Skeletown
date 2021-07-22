@@ -1,6 +1,4 @@
 TO DO:
-- UI
-	- Nicer looking UI colors
 - Backgrounds
 	- Art for the backgrounds is needed
 
