@@ -21,6 +21,7 @@ DONE:
 - UI
 	- Possible final layout established
 	- Displays descriptions for clues and items, and updates automatically
+	- Buttons set to only be enabled when necessary
 - Plot
 	- Story is completed
 - Documentation

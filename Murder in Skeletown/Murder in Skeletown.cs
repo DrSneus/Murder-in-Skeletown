@@ -50,10 +50,25 @@ namespace Skeletown_Game
             }
         }
 
-        private void btnDialogue_Click(object sender, EventArgs e)
+        private void btnDialogue_Click(object sender=null, EventArgs e=null)
         {
-            // Displays the default dialogue for the location
             menu_ID = DIALOGUE_ID;
+
+            // Updates UI to disable dialogue button
+            // Swap buttons
+            btnDialogue.Enabled = false;
+            btnDialogue.Visible = false;
+            btnMove.Enabled = true;
+            btnMove.Visible = true;
+
+            // Enable labels
+            lblDialogue.Visible = true;
+            lblMove.Visible = false;
+
+            // Sets the label for the dialogue
+            lblDialogue.Text = btnDialogue.Text;
+
+            // Displays default dialogue for the location
             DisplayDialogue(0);
         }
 
@@ -70,6 +85,16 @@ namespace Skeletown_Game
                     moveOptions.Add(adjacent);
                 }
             }
+
+            // Swap buttons
+            btnDialogue.Enabled = true;
+            btnDialogue.Visible = true;
+            btnMove.Enabled = false;
+            btnMove.Visible = false;
+
+            // Enable labels
+            lblDialogue.Visible = false;
+            lblMove.Visible = true;
 
             // Changing the menu to be based on moveOptions
             listMenu.DataSource = moveOptions;
@@ -92,7 +117,7 @@ namespace Skeletown_Game
 
             // Set up dialogue
             _currentFlag = null;
-            DisplayDialogue(0);
+            btnDialogue_Click();
         }
 
         private void SetUpNPC(NPC npcCheck)

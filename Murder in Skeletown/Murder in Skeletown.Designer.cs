@@ -29,7 +29,7 @@ namespace Skeletown_Game
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             this.listMenu = new System.Windows.Forms.ListBox();
             this.btnMove = new System.Windows.Forms.Button();
             this.btnDialogue = new System.Windows.Forms.Button();
@@ -44,6 +44,8 @@ namespace Skeletown_Game
             this.lblClues = new System.Windows.Forms.Label();
             this.btnClues = new System.Windows.Forms.Button();
             this.btnInventory = new System.Windows.Forms.Button();
+            this.lblDialogue = new System.Windows.Forms.Label();
+            this.lblMove = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.pbMain)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvData)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbNPC)).BeginInit();
@@ -75,6 +77,7 @@ namespace Skeletown_Game
             // btnDialogue
             // 
             this.btnDialogue.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.btnDialogue.Enabled = false;
             this.btnDialogue.Font = new System.Drawing.Font("NSimSun", 16F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this.btnDialogue.Location = new System.Drawing.Point(791, 577);
             this.btnDialogue.Name = "btnDialogue";
@@ -82,6 +85,7 @@ namespace Skeletown_Game
             this.btnDialogue.TabIndex = 21;
             this.btnDialogue.Text = "Look";
             this.btnDialogue.UseVisualStyleBackColor = false;
+            this.btnDialogue.Visible = false;
             this.btnDialogue.Click += new System.EventHandler(this.btnDialogue_Click);
             // 
             // rtbMessages
@@ -127,14 +131,14 @@ namespace Skeletown_Game
             this.dgvData.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
             this.dgvData.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvData.ColumnHeadersVisible = false;
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("NSimSun", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvData.DefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle3.Font = new System.Drawing.Font("NSimSun", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvData.DefaultCellStyle = dataGridViewCellStyle3;
             this.dgvData.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
             this.dgvData.Location = new System.Drawing.Point(746, 86);
             this.dgvData.MultiSelect = false;
@@ -223,11 +227,39 @@ namespace Skeletown_Game
             this.btnInventory.Visible = false;
             this.btnInventory.Click += new System.EventHandler(this.btnInventory_Click);
             // 
+            // lblDialogue
+            // 
+            this.lblDialogue.BackColor = System.Drawing.SystemColors.ControlDarkDark;
+            this.lblDialogue.Font = new System.Drawing.Font("NSimSun", 16F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.lblDialogue.ForeColor = System.Drawing.SystemColors.ButtonFace;
+            this.lblDialogue.Location = new System.Drawing.Point(791, 577);
+            this.lblDialogue.Name = "lblDialogue";
+            this.lblDialogue.Size = new System.Drawing.Size(454, 141);
+            this.lblDialogue.TabIndex = 39;
+            this.lblDialogue.Text = "Look";
+            this.lblDialogue.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // lblMove
+            // 
+            this.lblMove.BackColor = System.Drawing.SystemColors.ControlDarkDark;
+            this.lblMove.Enabled = false;
+            this.lblMove.Font = new System.Drawing.Font("NSimSun", 16F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.lblMove.ForeColor = System.Drawing.SystemColors.ButtonFace;
+            this.lblMove.Location = new System.Drawing.Point(791, 753);
+            this.lblMove.Name = "lblMove";
+            this.lblMove.Size = new System.Drawing.Size(454, 141);
+            this.lblMove.TabIndex = 40;
+            this.lblMove.Text = "Move";
+            this.lblMove.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblMove.Visible = false;
+            // 
             // Skeletown_Game
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1298, 917);
+            this.Controls.Add(this.lblMove);
+            this.Controls.Add(this.lblDialogue);
             this.Controls.Add(this.dgvData);
             this.Controls.Add(this.lblClues);
             this.Controls.Add(this.lblLocation);
@@ -268,6 +300,8 @@ namespace Skeletown_Game
         private System.Windows.Forms.Label lblClues;
         private System.Windows.Forms.Button btnClues;
         private System.Windows.Forms.Button btnInventory;
+        private System.Windows.Forms.Label lblDialogue;
+        private System.Windows.Forms.Label lblMove;
     }
 }
 
