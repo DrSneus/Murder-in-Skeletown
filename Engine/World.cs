@@ -57,6 +57,7 @@ namespace Engine
 
         private static void PopulateItems()
         {
+            // Creates and adds all items to global list
             Items.Add(new Item(ITEM_ID_NEWS, "Today's Newspaper", "Details Benny's murder, and yesterday's nice weather"));
             Items.Add(new Item(ITEM_ID_MEMBER_CARD, "\'Bone Dry\' Member's Card", "Limited edition card, given only to CaBone members."));
             Items.Add(new Item(ITEM_ID_MUSEUM_KEY, "Museum Key", "Given to you by the museum director."));
@@ -285,7 +286,7 @@ namespace Engine
 
             parkBridge.AdjacentLocations.Add(park);
 
-            // Adding location dialogue
+            // Adding location dialogue and flags
             home.DialogueTree.Add(new Dialogue("Your place of work, located just outside Skeletown", 0,
                 new string[] { "Read the news", "Water the office plant" },
                 new double[] { 0.1, 0.2 }));
@@ -441,6 +442,7 @@ namespace Engine
 
         public static Item ItemByID(int id)
         {
+            // Finding an item based on its id
             foreach (Item item in Items)
             {
                 if (item.ID == id)
@@ -454,6 +456,7 @@ namespace Engine
 
         public static NPC NPCByID(int id)
         {
+            // Finding an NPC based on their id
             foreach (NPC NPC in NPCs)
             {
                 if (NPC.ID == id)
@@ -467,6 +470,7 @@ namespace Engine
 
         public static Clue ClueByID(int id)
         {
+            // Finding a clue based on its id
             foreach (Clue clue in Clues)
             {
                 if (clue.ID == id)
@@ -480,6 +484,7 @@ namespace Engine
 
         public static Location LocationByID(int id)
         {
+            // Finding a location based on its id
             foreach (Location location in Locations)
             {
                 if (location.ID == id)
@@ -493,16 +498,19 @@ namespace Engine
 
         public static Clue ClueByDialogue(Dialogue dialogue)
         {
+            // Returns the clue for a dialogue
             return dialogue.GiveClue;
         }
 
         public static Item ItemByDialogue(Dialogue dialogue)
         {
+            // Returns the item for a dialogue
             return dialogue.GiveItem;
         }
 
         public static Dialogue NPCDialogueByID(NPC npc, double dialogueID)
         {
+            // Finds the dialogue for an npc, given the dialogue id
             foreach (Dialogue dialogue in npc.DialogueTree)
             {
                 if (dialogue.ID == dialogueID)
@@ -516,6 +524,7 @@ namespace Engine
 
         public static Dialogue LocationDialogueByID(Location location, double dialogueID)
         {
+            // Finds the dialogue for a location given the dialogue id
             foreach (Dialogue dialogue in location.DialogueTree)
             {
                 if (dialogue.ID == dialogueID)

@@ -19,8 +19,9 @@ namespace Engine
             CompletedDescription = completed;
         }
 
-        public void ReplaceDialogue()
+        public void ReplaceDescription()
         {
+            // Replaces current clue description with its alternative description
             Description = CompletedDescription;
         }
     }

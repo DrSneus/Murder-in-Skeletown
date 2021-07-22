@@ -23,3 +23,4 @@ DONE:
 	- Displays descriptions for clues and items, and updates automatically
 - Plot
 	- Story is completed
+- Documentation

@@ -11,8 +11,6 @@ namespace Engine
         public List<Clue> Clues { get; set; }
         public Location CurrentLocation { get; set; }
 
-        public List<Location> VisitedLocations = new List<Location>();
-
         public Player(string name)
         {
             Name = name;
@@ -22,9 +20,11 @@ namespace Engine
 
         public bool checkForClues(Dialogue dialogue)
         {
+            // Checks if this dialogue contains a clue
             Clue dialogueclue = World.ClueByDialogue(dialogue);
             if (dialogueclue != null)
             {
+                // If a clue exists, add it to the clue list, then remove it
                 Clues.Add(dialogueclue);
                 dialogue.GiveClue = null;
 
@@ -36,9 +36,11 @@ namespace Engine
 
         public bool checkForItems(Dialogue dialogue)
         {
+            // Checks if this dialogue contains an item
             Item dialogueitem = World.ItemByDialogue(dialogue);
             if (dialogueitem != null)
             {
+                // If an item exists, add it to the item list, then remove it
                 Inventory.Add(dialogueitem);
                 dialogue.GiveItem = null;
 
@@ -50,38 +52,14 @@ namespace Engine
 
         public bool IsFlagCompleted(DialogueFlag flag)
         {
+            // Checks if a dialogue flag meets all its conditions
+            // Checks if the flag exists at all
             if (flag == null)
             {
                 return false;
             }
-
+            // Checks if we have the item and clue required for the flag, as well as whether the dialogue path is available
             if (Inventory.Contains(flag.ItemReq) && Clues.Contains(flag.ClueReq) && flag.NewDialoguePath != 0) {
-                return true;
-            }
-
-            return false;
-        }
-
-        public void AddItemToInventory(Item itemToAdd)
-        {
-            foreach (Item i in Inventory)
-            {
-                // If the player has the item, skip adding it
-                if (i.ID == itemToAdd.ID)
-                {
-                    return;
-                }
-            }
-            // They didn't have the item, so add it to their inventory
-            Inventory.Add(itemToAdd);
-        }
-
-        public bool IsNewLocation(Location location)
-        {
-            // Checks if the location has been visited yet
-            if (VisitedLocations.Contains(location) != true)
-            {
-                VisitedLocations.Add(location);
                 return true;
             }
 

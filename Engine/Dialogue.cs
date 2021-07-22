@@ -55,6 +55,7 @@ namespace Engine
 
         public void AddNewResponse(string newresponses, double newresponseid)
         {
+            // Adds a new response option to the dialogue tree, allowing for the usage of flags to alter dialogue
             Responses = new List<string>(Responses) { newresponses }.ToArray();
             ResponseID = new List<double>(ResponseID) { newresponseid }.ToArray();
         }

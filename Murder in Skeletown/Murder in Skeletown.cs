@@ -17,9 +17,9 @@ namespace Skeletown_Game
         private NPC _currentNPC;
         private Dialogue _currentDialogue;
         private DialogueFlag _currentFlag;
+        private int menu_ID = 0;
         private const int DIALOGUE_ID = 1;
         private const int MOVE_ID = 2;
-        private int menu_ID = 0;
 
         public Skeletown_Game()
         {
@@ -30,7 +30,7 @@ namespace Skeletown_Game
 
         private void listMenu_SelectedIndexChanged(object sender, EventArgs e)
         {
-            // Moving menu
+            // If on move-setting, move to selected location
             if (menu_ID == MOVE_ID)
             {
                 menu_ID = 0;
@@ -52,6 +52,7 @@ namespace Skeletown_Game
 
         private void btnDialogue_Click(object sender, EventArgs e)
         {
+            // Displays the default dialogue for the location
             menu_ID = DIALOGUE_ID;
             DisplayDialogue(0);
         }
@@ -59,6 +60,7 @@ namespace Skeletown_Game
         private void btnMove_Click(object sender, EventArgs e)
         {
             menu_ID = 0;
+
             // Adding all adjacent, unlocked locations
             List<Location> moveOptions = new List<Location>();
             foreach(Location adjacent in _player.CurrentLocation.AdjacentLocations)
@@ -77,16 +79,13 @@ namespace Skeletown_Game
 
         private void MoveTo(Location newLocation)
         {
-            // Mark location as having been entered
-            _player.IsNewLocation(newLocation);
-
             // Update the player's current location
             _player.CurrentLocation = newLocation;
 
             // Display current location name and description
             lblLocation.Text = newLocation.Name;
 
-            // Does the location have a NPC?
+            // Setting up an NPC if needed
             _currentNPC = newLocation.NPCHere;
             SetUpNPC(_currentNPC);
             SwapDialogueButton();
@@ -165,7 +164,7 @@ namespace Skeletown_Game
 
             // Remove flag and unlock locations once the dialogue has been selected
             else if(_currentFlag != null && _currentDialogue.ID == _currentFlag.NewDialogue.ID){
-                World.ClueByID(_currentFlag.ClueReq.ID).ReplaceDialogue();
+                World.ClueByID(_currentFlag.ClueReq.ID).ReplaceDescription();
                 
                 _currentFlag = null;
 
@@ -239,6 +238,7 @@ namespace Skeletown_Game
 
         private void UpdateInventoryListInUI()
         {
+            // Displays the user's current inventory
             dgvData.RowHeadersVisible = false;
             dgvData.ColumnCount = 2;
             dgvData.Columns[0].Width = 200;
@@ -255,6 +255,7 @@ namespace Skeletown_Game
 
         private void UpdateClueListInUI()
         {
+            // Displays the user's current clue list
             dgvData.RowHeadersVisible = false;
             dgvData.ColumnCount = 2;
             dgvData.Columns[0].Width = 200;
@@ -271,6 +272,7 @@ namespace Skeletown_Game
 
         private void SwapDialogueButton()
         {
+            // Determines the button text depending on whether an NPC exists
             btnDialogue.Text = "Look";
 
             if(_currentNPC != null)
@@ -281,10 +283,12 @@ namespace Skeletown_Game
 
         private void UpdateDGV()
         {
+            // Determines whether to display the clue list or inventory list
             if (btnInventory.Enabled)
             {
                 UpdateClueListInUI();
             }
+
             else
             {
                 UpdateInventoryListInUI();
@@ -293,6 +297,8 @@ namespace Skeletown_Game
 
         private void btnInventory_Click(object sender = null, EventArgs e = null)
         {
+            // Swaps to the inventory menu
+
             // Swap buttons
             btnInventory.Enabled = false;
             btnInventory.Visible = false;
@@ -309,6 +315,8 @@ namespace Skeletown_Game
 
         private void btnClues_Click(object sender = null, EventArgs e = null)
         {
+            // Swaps to the clue menu
+
             // Swap buttons
             btnInventory.Enabled = true;
             btnInventory.Visible = true;
@@ -325,6 +333,7 @@ namespace Skeletown_Game
 
         private void endGame()
         {
+            // Changes the UI to allow for the final location
             MoveTo(World.LocationByID(World.LOCATION_ID_ENDSCREEN));
             btnDialogue.Enabled = false;
             btnDialogue.Visible = false;
